@@ -1,15 +1,34 @@
-var express = require('express'),
-    bodyParser = require('body-parser'),
+var express      = require('express'),
+    bodyParser   = require('body-parser'),
     cookieParser = require('cookie-parser'),
-    mongoose = require('mongoose'),
-    session = require('express-session'),
-    MongoStore = require('connect-mongo')(session),
-    passport = require('passport'),
+    mongoose     = require('mongoose'),
+    session      = require('express-session'),
+    MongoStore   = require('connect-mongo')(session),
+    passport     = require('passport'),
     passportConf = require('./config/passport'),
-    secrets = require('./config/secrets'),
-    path = require('path');
+    secrets      = require('./config/secrets'),
+    path         = require('path'),
+    amqp         = require('amqplib'),
+    amqpConn     = null;
+    // rabbit       = require('./config/rabbitmq');
 
 var app = express();
+
+// //rabbitmq connection
+// amqp.connect('amqp://localhost', function(err, conn){});
+// amqp.connect('amqp://localhost', function(err, conn){
+//   if(err) console.log("Error in conncetion");
+//   conn.creatChannel(function(err, ch){
+//     if(err) console.log("Error in channel "+err);
+//     console.log("channel connected");
+//
+//     var q = 'hello';
+//     ch.assertQueue(q, {durable: false});
+//     // Note: on Node 6 Buffer.from(msg) should be used
+//     ch.sendToQueue(q, new Buffer.from('Hello World!'));
+//     console.log(" [x] Sent 'Hello World!'");
+//   });
+// });
 
 //mongoose connection
 mongoose.connect(secrets.mongodburl);
@@ -44,18 +63,32 @@ app.use(function(req, res, next){
 //require controllers
 var userController = require('./controllers/user');
 
-//routes
+//frontend route
 app.get('*', function(req, res){
   res.render('home');
-})
-app.get('/', userController.getLogin);
-app.post('/', userController.postLogin);
+});
 
-app.post('/api/users', userController.getUsers);
-app.post('/addUser', userController.postSignUp);
+//api calls
+app.post('/api/login', userController.postLogin);
+app.delete('/api/login', userController.deleteUser);
 
+app.post('/api/signup', userController.postSignUp);
+
+app.post('/users', userController.getUsers);
+app.post('/api/addUser', userController.postSignUp);
 app.get('/logout', userController.getLogout);
-//
+
+
+
+
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+
+// error handlers
 
 
 //listen

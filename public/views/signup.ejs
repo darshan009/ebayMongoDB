@@ -1,0 +1,29 @@
+<div class="panel-body col-lg-5 center" ng-controller="UserController">
+  <h1 align="center">Sign up</h1><br>
+  <div class="form-group">
+    <form class="form-horizontal" method="POST">
+      <input type="text" name="name" ng-model="firstName" class="form-control" id="name" placeholder="Enter your First Name">
+      </br>
+      <input type="text" name="name" ng-model="lastName" class="form-control" id="name" placeholder="Enter your Last Name">
+      </br>
+      <input type="email" name="email" ng-model="email" class="form-control" id="email" placeholder="Enter your email">
+      </br>
+      <input type="text" name="username" ng-model="username" class="form-control" id="pwd" placeholder="Choose a user name">
+      </br>
+      <input type="password" name="password" ng-model="password" class="form-control" id="pwd" placeholder="Choose password">
+      </br>
+      <input type="text" name="birthday" ng-model="birthday" class="form-control" id="pwd" placeholder="Birthday: MM/DD/YYYY">
+      </br>
+      <input type="Number" name="contactNo" ng-model="contactNo" class="form-control" id="pwd" placeholder="Enter your contact number">
+      </br>
+      <input type="String" name="address" ng-model="address" class="form-control" id="pwd" placeholder="Enter your location">
+      </br>
+      <button type="submit" class="btn btn-primary btn-block" ng-click = signup()>Register</button>
+    </br>
+    </form>
+    <p align="center">
+      Already have an account? <a href="/login"> Log-In </a>
+      to get started.
+    </p>
+  </div>
+</div>

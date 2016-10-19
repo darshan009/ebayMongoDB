@@ -6,32 +6,25 @@ var passport = require('passport'),
  | LOGIN LOGOUT
  |-----------------------------------------------------------
 */
-exports.getLogin = function(req, res){
-  if(req.user){
-    if((req.user.type).toLowerCase() == "admin")
-      res.redirect('/userList');
-    else
-      res.end("Your are not authorized");
-  }else res.render('adminLogin');
-};
 
 exports.postLogin = function(req, res, next){
     passport.authenticate('local', function(err, user, info){
       if (err)
         return next(err);
       if(!user)
-        res.redirect('/');
-      req.logIn(user,function(err){
+        res.send(false);
+      req.logIn(user, function(err){
         if(err)
           return next(err);
-        res.redirect('/userList');
+        console.log(user);
+        res.send(user);
       });
     })(req, res, next);
 };
 
 exports.getLogout = function(req, res){
   req.logout();
-  res.redirect('/');
+  res.send(true);
 };
 
 //get all users
@@ -46,31 +39,39 @@ exports.getUsers = function(req, res, next){
 
 //signup
 exports.getSignUp = function(req, res, next){
-  res.render('signup');
+  res.send(true);
 };
 
 exports.postSignUp = function(req,res){
     var user = new User({
-        firstName: req.body.name,
+        firstName: req.body.firstName,
         lastName: req.body.lastName,
-        email:req.body.email,
-        password:req.body.password
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
+        birthday: req.body.birthday,
+        contactNo: req.body.contactNo,
+        address: req.body.address,
+        location: req.body.location
     });
-    user.save(function(err)
-    {
-        var error;
-        if (!err) {
-          console.log("user signup successfull");
-          res.redirect('/');
-        }
-        else if(err.code === 11000)
-        {
-            error = "Provided email already exists..! try another.";
-        }
-        else {
-            error = "Unable to save register.. Try again";
-        }
-        res.render('signup', {error: error});
+    user.save(function(err) {
+      if (!err) {
+        console.log("user signup successfull");
+      }
+      // else if(err.code === 11000)
+      // {
+      //     error = "Provided email already exists..! try another.";
+      //     res.send(false);
+      // }
+      // else {
+      //     error = "Unable to save register.. Try again";
+      //     res.send(false);
+      // }
     });
+    console.log(user);
+    res.send(user);
+};
 
+exports.deleteUser = function(req, res) {
+  res.send("deleting");
 };
