@@ -11,7 +11,17 @@ var userSchema = new mongoose.Schema({
   password: String,
   birthday: Date,
   contactNo : Number,
-  location: String
+  location: String,
+  lastLoginTime: Date,
+  bids: {
+    adId: {type: mongoose.Schema.Types.ObjectId, ref: 'Advertisement'},
+    quantityEntered: Number,
+    biddingValue: Number
+  },
+  purchasedItems: [{
+    adId: { type: mongoose.Schema.Types.ObjectId, ref: 'Advertisement' },
+    quantityEntered: Number
+  }]
 });
 
 //hashing

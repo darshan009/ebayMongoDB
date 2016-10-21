@@ -69,17 +69,31 @@ app.get('*', function(req, res){
 });
 
 //api calls
+app.post('/', userController.allSellingAdvertisement);
 app.post('/api/login', userController.postLogin);
 app.delete('/api/login', userController.deleteUser);
 
 app.post('/api/signup', userController.postSignUp);
 
-app.post('/users', userController.getUsers);
+app.post('/api/currentUser', userController.getCurrentUser);
 app.post('/api/addUser', userController.postSignUp);
 app.get('/logout', userController.getLogout);
 
+//verify if user is logged in
+app.post('/isLoggedIn', userController.isLoggedIn);
 
+//profile routes
+app.post('/api/addAdvertisement', userController.postPublishAd);
+app.post('/api/allAdvertisement', userController.allAdvertisement);
+app.post('/api/getAdvertisementDetail/:adId', userController.getAdvertisementDetail);
 
+//shoppingCart
+app.post('/api/shoppingCart', userController.shoppingCart);
+app.post('/api/addToCart', userController.addToCart);
+app.post('/api/removeFromCart', userController.removeFromCart)
+
+//checkout
+app.post('/api/checkout', userController.checkout);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

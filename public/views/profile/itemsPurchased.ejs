@@ -1,0 +1,25 @@
+<div class="rmd-container" ng-controller="profile">
+  <h3> All Your Purchased Advertisement </h1></br>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Specification</th>
+        <th>Shipping from</th>
+        <th>Quantity</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat = "eachAd in purchasedAd">
+        <td> {{eachAd.id}}</td>
+        <td> {{eachAd.name}}</td>
+        <td> {{eachAd.specification}}</td>
+        <td> {{eachAd.shipping}}</td>
+        <td> {{eachAd.quantity}}</td>
+        <td> {{eachAd.price}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

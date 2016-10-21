@@ -8,6 +8,12 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
+    <script src="libs/bootstrap/dist/js/boostrap.min.js"></script>
+    <script src="libs/bootstrap/dist/fonts/glyphicons-halflings-regular.eot"></script>
+    <script src="libs/bootstrap/dist/fonts/glyphicons-halflings-regular.svg"></script>
+    <script src="libs/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf"></script>
+    <script src="libs/bootstrap/dist/fonts/glyphicons-halflings-regular.woff"></script>
+    <script src="libs/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2"></script>
     <link rel="stylesheet" href="styles/styles.css">
     <!-- <link rel="stylesheet" href="css/style.css"> -->
      <!-- custom styles -->
@@ -28,12 +34,15 @@
           <a class="navbar-brand" href="/">Ebay</a>
         </div>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/login">Login</a></li>
-            <li class="dropdown">
+            <li><a href="/shoppingCart" class="btn"><i class="icon-shopping-cart">Cart</i></a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li ng-if= !currentUser><a href="/login">Login</a></li>
+            <li class="dropdown" ng-if= currentUser>
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Welcome {{currentUser.firstName}} {{currentUser.lastName}}
                 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="/profile" ui-view="profile">Profile</a></li>
+                <li><a href="/profile">Profile</a></li>
                 <li><a href="/logout">Logout</a></li>
               </ul>
             </li>
@@ -43,7 +52,7 @@
     </nav>
 
       <!-- ANGULAR DYNAMIC CONTENT -->
-      <div ng-view></div>
+      <div ui-view class="fullPage"></div>
 
 
       <!-- Include everything here  -->
@@ -55,6 +64,7 @@
       <!-- ANGULAR CUSTOM -->
       <script src="../js/controllers/mainCtrl.js"></script>
       <script src="../js/controllers/userCtrl.js"></script>
+      <script src="../js/controllers/advertisementCtrl.js"></script>
       <script src="../js/services/UserService.js"></script>
       <script src="../js/appRoutes.js"></script>
       <script src="../js/app.js"></script>

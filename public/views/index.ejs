@@ -1,2 +1,30 @@
-  <div class="container">
-  </div>
+<div class="rmd-container" ng-controller="MainController">
+    <div class="container-fluid">
+      <div class="jumbotron">
+        <h2>Hello {{}}</h2>
+        <p>Scroll through the products below.</p>
+      </div>
+      <hr>
+      <h3> Choose a product to buy {{testCheck}}</h1></br>
+      <div class="row">
+        <div class="col-md-6 col-lg-3 cardCustom" ng-repeat="adContent in allSellingAdvertisement">
+          <div class="card">
+            <div class="cardHeader">
+              <h3 class="card-header"><a href="/getAdvertisementDetail/{{adContent._id}}">{{adContent.name}}</a></h3>
+            </div>
+            <hr>
+            <div class="card-block">
+              <p class="card-text">Quantity - {{adContent.quantity}}</p>
+              <p class="card-text">Details - {{adContent.specification}}</p>
+              <p class="card-text">Shipping from - {{adContent.shipping}}</p>
+            </div>
+            <hr>
+            <div class="cardHeader">
+              <h5 class="card-footer">Click on the item to know more</h5>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+</div>

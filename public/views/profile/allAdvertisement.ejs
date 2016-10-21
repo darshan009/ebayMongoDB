@@ -1,0 +1,23 @@
+<div class="rmd-container" ng-controller="UserController">
+  <h3> All Your Advertisement </h1></br>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Specification</th>
+        <th>Shipping from</th>
+        <th>Quantity</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat = "eachAd in allAd">
+        <td> {{eachAd.name}}</td>
+        <td> {{eachAd.specification}}</td>
+        <td> {{eachAd.shipping}}</td>
+        <td> {{eachAd.quantity}}</td>
+        <td> {{eachAd.price}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

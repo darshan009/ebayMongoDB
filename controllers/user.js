@@ -1,5 +1,7 @@
 var passport = require('passport'),
-    User = require('../models/User');
+    User = require('../models/User'),
+    Advertisement = require('../models/Advertisement'),
+    lastLoginTime;
 
 /*
  |-----------------------------------------------------------
@@ -8,6 +10,7 @@ var passport = require('passport'),
 */
 
 exports.postLogin = function(req, res, next){
+    // var date = Date.now();
     passport.authenticate('local', function(err, user, info){
       if (err)
         return next(err);
@@ -16,7 +19,13 @@ exports.postLogin = function(req, res, next){
       req.logIn(user, function(err){
         if(err)
           return next(err);
+        this.lastLoginTime = user.lastLoginTime;
+        user.lastLoginTime = Date.now();
+        user.save();
         console.log(user);
+
+        //create users session shoppingCart
+        req.session.shoppingCart = [];
         res.send(user);
       });
     })(req, res, next);
@@ -24,7 +33,8 @@ exports.postLogin = function(req, res, next){
 
 exports.getLogout = function(req, res){
   req.logout();
-  res.send(true);
+  // res.send(true);
+  res.redirect('/');
 };
 
 //get all users
@@ -75,3 +85,274 @@ exports.postSignUp = function(req,res){
 exports.deleteUser = function(req, res) {
   res.send("deleting");
 };
+
+exports.getCurrentUser = function(req, res){
+  // console.log("in getCurrentUser");
+  var userDetails = req.user;
+  userDetails.lastLoginDateTime = this.lastLoginTime;
+  res.send(userDetails);
+};
+
+
+/*
+ |-----------------------------------------------------------
+ | check if user is logged in
+ |-----------------------------------------------------------
+*/
+exports.isLoggedInAngular = function(req, res, next) {
+  if(req.user)
+    res.send(true);
+  else
+    res.send(false);
+};
+
+exports.isLoggedIn = function(req, res, next) {
+  if(req.user)
+    return next();
+  else
+    res.send(false);
+};
+
+
+
+/*
+ |-----------------------------------------------------------
+ | Publishng a new advertisement
+ |-----------------------------------------------------------
+*/
+
+exports.postPublishAd = function(req, res){
+  console.log(req.user.user_id);
+  var advertisement = new Advertisement({
+      name : req.body.name,
+      specification : req.body.specification,
+      quantity : req.body.quantity,
+      shipping : req.body.shipping,
+      price : req.body.price,
+      status : "live",
+      userId : req.user._id,
+      biddingStatus : req.body.biddingStatus
+    });
+
+  advertisement.save(function(err){
+    if(err)
+      return done(err);
+  });
+};
+
+exports.allAdvertisement = function(req, res) {
+  var userId = req.user._id;
+  console.log("in allAdvertisement");
+  Advertisement.find({userId: userId}, function(err, advertisements){
+    console.log(advertisements);
+    res.send(advertisements);
+  });
+};
+
+
+
+exports.allSellingAdvertisement = function(req, res){
+  var userId = req.user._id,
+      sortedAdvertisement = [];
+  Advertisement.find().exec(function(err, advertisements){
+    console.log("------in allSellingAdvertisement----");
+    for(var i=0; i<advertisements.length; i++) {
+      if(advertisements[i].userId != userId) {
+        sortedAdvertisement.push(advertisements[i]);
+      }
+    }
+    console.log(sortedAdvertisement);
+    res.send(sortedAdvertisement);
+  });
+};
+
+exports.getAdvertisementDetail = function(req, res){
+  console.log("in getAdvertisementDetail");
+  console.log(req.params.adId);
+  Advertisement.findById(req.params.adId, function(err, advertisement){
+    console.log(advertisement);
+    res.send(advertisement);
+  });
+};
+
+
+exports.addToCart = function(req, res) {
+  Advertisement.findById(req.body.adId).exec(function(err, advertisement){
+    if(err)
+      return done(err);
+    var fullCart = {
+      id : advertisement._id,
+      name : advertisement.name,
+      specification : advertisement.specification,
+      quantity : advertisement.quantity,
+      shipping : advertisement.shipping,
+      price : advertisement.price,
+      quantityEntered : req.body.quantityEntered
+    }
+    console.log(fullCart);
+    req.session.shoppingCart.push(fullCart);
+    res.send(fullCart);
+  });
+};
+
+
+exports.shoppingCart = function(req, res) {
+  console.log(req.session);
+  res.send(req.session.shoppingCart);
+};
+
+
+exports.removeFromCart = function(req, res) {
+  console.log("in removeFromCart");
+  console.log(req.body.adId);
+  for(var i=0; i<req.session.shoppingCart.length; i++)
+    if (req.session.shoppingCart[i].id == req.body.adId) {
+      req.session.shoppingCart.splice(i, 1);
+      req.session.save();
+    }
+  console.log(req.session);
+  res.send(req.session.shoppingCart);
+};
+
+exports.placeBid = function(req, res) {
+  User.findById(req.user._id).exec(function(err, user){
+    user.bids.push({
+      adId: req.body.adId,
+      quantityEntered : req.body.quantityEntered,
+      biddingValue : req.body.biddingValue
+    });
+    user.save(function(err, user){
+      if(err)
+        return done(err);
+    });
+    console.log(user);
+    res.send(true);
+  });
+};
+
+
+
+exports.checkout = function(req, res) {
+  console.log("-----------checkout-------");
+  console.log(req.session.shoppingCart);
+  var shoppingCartId = 0, quantityEntered = 0;
+  for(var i=0; i<req.session.shoppingCart.length; i++) {
+    shoppingCartId = req.session.shoppingCart[i].id;
+    quantityEntered = req.session.shoppingCart[i].quantityEntered;
+    User.findById(req.user._id)
+      .then(function(user){
+      // Advertisement.findById(shoppingCartId).exec(function(err, advertisement){
+
+        //reflect the quantity in the advertisement
+        // advertisement.quantity -= quantityEntered;
+        // if(advertisement.quantity == 0)
+        //   advertisement.status = false;
+        //push advertisement into purchased list of user
+        // if(!user.purchasdItems)
+        //   user.purchasdItems = [];
+        // user.purchasdItems.push({
+        //   adId: shoppingCartId
+        //   // quantityEntered: quantityEntered
+        // });
+        // advertisement.save(function(err, advertisement){
+        //   if(err)
+        //     return err;
+        // });
+        // console.log(advertisement);
+        console.log(user.purchasdItems);
+        user.lastName = "Hello";
+        user.save(function(err, user){
+          if(err)
+            console.log(err);
+        });
+        console.log(user);
+      // });
+    })
+    .then(function(err){
+      if(err)
+        console.log(err);
+    });
+  }
+};
+
+
+
+//
+// exports.loadAllAd = function(req, res) {
+//   var userId = req.user.userId;
+//   console.log("in loadAd");
+//   if(pool.length != 0) {
+//     var connection = pool.pop();
+//     connection.query("SELECT * FROM Advertisement WHERE status = ?", "live", function(err, rows){
+//       if(err)
+//         console.log(err);
+//       console.log(rows);
+//       pool.push(connection);
+//       res.send(rows);
+//     });
+//   }
+// };
+//
+//
+//
+// exports.purchasedAd = function(req, res) {
+//   var userId = req.user.userId;
+//   console.log("in purchasedAd");
+//   if(pool.length != 0) {
+//     var connection = pool.pop();
+//     connection.query("SELECT * FROM Purchased WHERE userId = ?", userId, function(err, rows){
+//       if(err)
+//         console.log(err);
+//       console.log(rows);
+//       pool.push(connection);
+//       res.send(rows);
+//     });
+//   }
+// };
+//
+// exports.loadSingleAdvertisement = function(req, res) {
+//   console.log(req.body.adId"));
+//   if(pool.length != 0) {
+//     var connection = pool.pop();
+//     connection.query("SELECT * FROM Advertisement WHERE id = ?", req.body.adId"), function(err, rows){
+//       if(err)
+//         console.log(err);
+//       console.log(rows);
+//       pool.push(connection);
+//       console.log("---------in loadSingleAdvertisement----------");
+//       res.send(rows);
+//     });
+//   }
+// };
+//
+//
+// // exports.getBids = function(req, res) {
+// //   console.log("---------in getBids----------");
+// //   var fullData = [];
+// //   pool.getConnection(function(err, connection){
+// //     connection.query("SELECT * FROM Bidding WHERE userId = ?", req.user.userId, function(err, rows){
+// //       if(err)
+// //         console.log(err);
+// //       console.log("bidding all data");
+// //       console.log(rows);
+// //       for(var i=0; i<rows.length; i++) {
+// //         connection.query("SELECT * FROM Advertisement WHERE id = ?", rows[i].adId, function(err, row){
+// //           if(err)
+// //             console.log(err);
+// //           fullData.push(row[0]);
+// //         });
+// //       }
+// //       console.log(fullData);
+// //       res.send(fullData);
+// //     });
+// //   });
+// // };
+//
+// exports.updateBiddingAfter = function(req, res) {
+//   console.log("hello");
+// };
+//
+// exports.getPersonalDetails = function(req, res){
+//   console.log("in getPersonalDetails");
+//   res.send(req.user);
+// };
