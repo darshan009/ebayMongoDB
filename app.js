@@ -86,6 +86,8 @@ app.post('/isLoggedIn', userController.isLoggedIn);
 app.post('/api/addAdvertisement', userController.postPublishAd);
 app.post('/api/allAdvertisement', userController.allAdvertisement);
 app.post('/api/getAdvertisementDetail/:adId', userController.getAdvertisementDetail);
+app.post('/api/soldItems', userController.soldItems);
+app.post('/api/purchasedItems', userController.purchasedItems);
 
 //shoppingCart
 app.post('/api/shoppingCart', userController.shoppingCart);

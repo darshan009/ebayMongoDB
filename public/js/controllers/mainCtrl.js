@@ -56,7 +56,7 @@ angular.module('MainCtrl', [])
           url : '/api/checkout'
         }).success(function(data) {
           console.log("in checkout success");
-          window.location = '/profile/purchasedAd';
+          $state.go('profile.itemsPurchased');
         }).error(function(error) {
           console.log("Error posting data");
         });

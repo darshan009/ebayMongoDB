@@ -22,6 +22,11 @@ angular.module('UserCtrl', [])
       console.log("Error posting data in currentUser");
     });
 
+    /*
+     |-----------------------------------------------------------
+     | User login signup
+     |-----------------------------------------------------------
+    */
 
     //user login
     $scope.login = function() {
@@ -69,7 +74,11 @@ angular.module('UserCtrl', [])
     };
 
 
-
+    /*
+     |-----------------------------------------------------------
+     | User advertisements
+     |-----------------------------------------------------------
+    */
 
     $scope.addAdvertisement = function(){
       console.log("-------in addAdvertisement------");
@@ -110,86 +119,34 @@ angular.module('UserCtrl', [])
       });
     };
 
+    /*
+     |-----------------------------------------------------------
+     | sold and purchased items
+     |-----------------------------------------------------------
+    */
+    $http({
+      method : "POST",
+      url : '/api/soldItems'
+    }).success(function(data) {
+      console.log("success in soldItems");
+      console.log(data);
+      $scope.soldItemsData = data;
+    }).error(function(error) {
+      res.end("Error posting data");
+    });
+
+    $http({
+      method : "POST",
+      url : '/api/purchasedItems'
+    }).success(function(data) {
+      console.log("success in purchasedAd");
+      console.log(data);
+      $scope.purchasedAd = data;
+    }).error(function(error) {
+      console.log("Error posting data");
+    });
 
 
-    //
-    //
-    // //call it on startup
-    // loadShoppingCart();
-    //
-    // //remove row from shoppingCart
-    // $scope.removeRow = function(cartId) {
-    //   console.log("in removeRow");
-    //   $http({
-    //     method : "POST",
-    //     url : '/removeFromCart',
-    //     data : {
-    //       "cartId" : cartId
-    //     }
-    //   }).success(function(data) {
-    //     console.log("in removeRow success");
-    //     loadShoppingCart();
-    //   }).error(function(error) {
-    //     console.log("Error posting data");
-    //   });
-    // };
-    //
-    // //on checkout
-    // $scope.checkout = function(quantityEntered){
-    //   console.log("--------checkout------");
-    //   // console.log(quantityEntered);
-    //   // console.log($scope.quantityEntered);
-    //   console.log($scope.creditCardNumberVerify);
-    //   if($scope.creditCardNumberVerify.toString().length == 16) {
-    //     $http({
-    //       method : "GET",
-    //       url : '/checkout',
-    //     }).success(function(data) {
-    //       console.log("in removeRow success");
-    //       loadShoppingCart();
-    //     }).error(function(error) {
-    //       console.log("Error posting data");
-    //     });
-    //     window.location = '/';
-    //   }else {
-    //     alert("credti card number invalid");
-    //   }
-    // };
-    //
-    //
-    // $scope.soldItems = function(){
-    //   console.log("in soldItems");
-    //   $http({
-    //     method : "GET",
-    //     url : '/loadAd'
-    //   }).success(function(data) {
-    //     console.log("success in soldItems");
-    //     console.log(data);
-    //     var soldItemsDefine = [];
-    //     for(var i=0; i<data.length; i++)
-    //       if(data[i].status === "sold")
-    //         soldItemsDefine.push(data[i]);
-    //     $scope.soldItemsData = soldItemsDefine;
-    //     console.log(soldItemsDefine);
-    //   }).error(function(error) {
-    //     res.end("Error posting data");
-    //   });
-    // };
-    //
-    //
-    //
-    // $scope.purchasedAd = function() {
-    //   $http({
-    //     method : "GET",
-    //     url : '/purchasedAd'
-    //   }).success(function(data) {
-    //     console.log("success in purchasedAd");
-    //     console.log(data);
-    //     $scope.purchasedAd = data;
-    //   }).error(function(error) {
-    //     console.log("Error posting data");
-    //   });
-    // };
     // // $scope.helloTest = "no";
     // // $scope.loadAdvertisement = function(adId) {
     // //   console.log("---------in loadSingleAdvertisement----------");
@@ -244,22 +201,6 @@ angular.module('UserCtrl', [])
     // //     console.log("Error posting data");
     // //   });
     // // };
-    //
-    // $scope.getPersonalDetails = function() {
-    //   $http({
-    //     method : "GET",
-    //     url : '/getPersonalDetails'
-    //   }).success(function(data) {
-    //     console.log("success in getPersonalDetails");
-    //     console.log(data);
-    //     $scope.firstName = data.firstName;
-    //     $scope.lastName = data.lastName;
-    //     $scope.email = data.email;
-    //     // $state.go('advertisement', {});
-    //   }).error(function(error) {
-    //     console.log("Error posting data");
-    //   });
-    // };
 
 
 });

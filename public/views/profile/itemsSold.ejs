@@ -1,4 +1,4 @@
-<div class="rmd-container" ng-controller="profile">
+<div class="rmd-container" ng-controller="UserController">
   <h3> All Your Sold Advertisement </h1></br>
   <table class="table table-striped">
     <thead>
@@ -12,11 +12,11 @@
     </thead>
     <tbody>
       <tr ng-repeat = "eachItem in soldItemsData">
-        <td> {{eachItem.name}}</td>
-        <td> {{eachItem.specification}}</td>
-        <td> {{eachItem.shipping}}</td>
-        <td> {{eachItem.quantity}}</td>
-        <td> {{eachItem.price}}</td>
+        <td> {{eachItem.adId.name}}</td>
+        <td> {{eachItem.adId.specification}}</td>
+        <td> {{eachItem.adId.shipping}}</td>
+        <td> {{eachItem.adId.quantity}}</td>
+        <td> {{eachItem.adId.price}}</td>
       </tr>
     </tbody>
   </table>

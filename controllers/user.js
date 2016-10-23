@@ -176,6 +176,12 @@ exports.getAdvertisementDetail = function(req, res){
 };
 
 
+/*
+ |-----------------------------------------------------------
+ | Shopping cart
+ |-----------------------------------------------------------
+*/
+
 exports.addToCart = function(req, res) {
   Advertisement.findById(req.body.adId).exec(function(err, advertisement){
     if(err)
@@ -315,102 +321,44 @@ exports.checkout = function(req, res) {
   }
 };
 
+
+/*
+ |-----------------------------------------------------------
+ | User profile purchased and sold items
+ |-----------------------------------------------------------
+*/
+
 exports.purchasedItems = function(req, res) {
   var userId = req.user.userId;
-  console.log("in purchasedAd");
-  Advertisement.find({userId: req.user._id}, function(err, advertisements){
-    if(err)
-      return done(err);
-    res.send(advertisements);
-  });
+  console.log("in purchasedItems");
+  User.findById(req.user._id)
+    .populate('purchasedItems.adId')
+    .exec()
+    .then(function(user){
+      console.log(user);
+      res.send(user.purchasedItems);
+    })
+    .then(undefined, function(err){
+      if(err)
+        console.log(err);
+    });
 };
 
+exports.soldItems = function(req, res) {
+  var userId = req.user.userId;
+  console.log("in soldItems");
+  User.findById(req.user._id)
+    .populate('soldItems.adId')
+    .exec()
+    .then(function(user){
+      res.send(user.soldItems);
+    })
+    .then(undefined, function(err){
+      if(err)
+        console.log(err);
+    });
+};
 
-
-
-// exports.checkout = function(req, res) {
-//   console.log("-----------checkout-------");
-//   console.log(req.session.shoppingCart);
-//   var shoppingCartId = 0, quantityEntered = 0, purchasedItems = [], soldItems = [];
-//
-//   //loop through all the items in the cart
-//   for(var i=0; i<req.session.shoppingCart.length; i++) {
-//     shoppingCartId = req.session.shoppingCart[i].id;
-//     quantityEntered = parseInt(req.session.shoppingCart[i].quantityEntered);
-//     User.findById(req.user._id)
-//       .then(function(user){
-//       Advertisement.findById(shoppingCartId)
-//       .exec(function(err, advertisement){
-//         User.findById(advertisement.userId).exec(function(err, seller){
-//
-//           //reflect the quantity in the advertisement
-//           advertisement.quantity -= quantityEntered;
-//           if(advertisement.quantity == 0)
-//             advertisement.status = false;
-//           advertisement.save(function(err, advertisement){
-//             if(err)
-//               return err;
-//           });
-//
-//           //push advertisement into purchased list of user
-//           if(user.purchasedItems.length > 0)
-//             purchasedItems = user.purchasedItems;
-//           purchasedItems.push({
-//             adId: shoppingCartId,
-//             quantityEntered: parseInt(quantityEntered)
-//           });
-//           user.purchasedItems = [];
-//           user.purchasedItems = purchasedItems;
-//           user.save(function(err, user){
-//             if(err)
-//               console.log(err);
-//           });
-//
-//           //push items as sold in sellers account
-//           if(seller.soldItems.length > 0)
-//             soldItems = seller.soldItems;
-//           soldItems.push({
-//             adId: shoppingCartId,
-//             quantityEntered: parseInt(quantityEntered)
-//           });
-//           seller.soldItems = [];
-//           seller.soldItems = soldItems;
-//           seller.save(function(err, seller){
-//             if(err)
-//               return err;
-//           });
-//           console.log("-------user------");
-//           console.log(user);
-//           console.log("-------seller-----");
-//           console.log(seller);
-//         });
-//       });
-//     })
-//     .then(function(err){
-//       if(err)
-//         console.log(err);
-//     });
-//   }
-// };
-
-//
-// exports.loadAllAd = function(req, res) {
-//   var userId = req.user.userId;
-//   console.log("in loadAd");
-//   if(pool.length != 0) {
-//     var connection = pool.pop();
-//     connection.query("SELECT * FROM Advertisement WHERE status = ?", "live", function(err, rows){
-//       if(err)
-//         console.log(err);
-//       console.log(rows);
-//       pool.push(connection);
-//       res.send(rows);
-//     });
-//   }
-// };
-//
-//
-//
 //
 //
 // // exports.getBids = function(req, res) {
