@@ -29,7 +29,7 @@
                 </br>
                 Bid: <input type="number" class="form-control"  ng-model="biddingValueEntered" ng-init="biddingValueEntered = 0" value="1">
               </br>
-                <a href="#" class="btn btn-primary" ng-disabled="biddingValueEntered < allSellingAdvertisement.price" ng-click="placeBid(quantityEntered, biddingValue)">Place your Bid</a>
+                <a href="#" class="btn btn-primary" ng-disabled="biddingValueEntered < allSellingAdvertisement.price" ng-click="placeBid(quantityEntered, biddingValueEntered)">Place your Bid</a>
               </p>
               <a href="#" class="btn btn-primary" ng-if="!bidding" ng-disabled="quantityEntered > allSellingAdvertisement.quantity || quantityEntered == 0 || quantityEntered == null" ng-click="addToCart(quantityEntered)">Add to Cart</a>
             </div>

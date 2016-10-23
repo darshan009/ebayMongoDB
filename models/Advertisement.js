@@ -8,7 +8,13 @@ var advertisementSchema = new mongoose.Schema({
   price : Number,
   status : Boolean,
   userId : { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  biddingStatus : Boolean
+  biddingStatus : Boolean,
+  biddingStartTime: Date,
+  lastBid: {
+    bidder: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    quantityEntered: Number,
+    biddingValue: Number
+  }
 });
 
 module.exports = mongoose.model('Advertisement', advertisementSchema);

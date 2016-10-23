@@ -122,7 +122,7 @@ exports.isLoggedIn = function(req, res, next) {
 */
 
 exports.postPublishAd = function(req, res){
-  console.log(req.user.user_id);
+  console.log(req.user._id);
   var advertisement = new Advertisement({
       name : req.body.name,
       specification : req.body.specification,
@@ -131,7 +131,8 @@ exports.postPublishAd = function(req, res){
       price : req.body.price,
       status : "live",
       userId : req.user._id,
-      biddingStatus : req.body.biddingStatus
+      biddingStatus : req.body.biddingStatus,
+      biddingStartTime: Date.now()
     });
 
   advertisement.save(function(err){
@@ -358,6 +359,119 @@ exports.soldItems = function(req, res) {
         console.log(err);
     });
 };
+
+
+/*
+ |-----------------------------------------------------------
+ | User bidding
+ |-----------------------------------------------------------
+*/
+
+exports.placeBid = function(req, res){
+  Advertisement.findById(req.body.adId).exec()
+    .then(function(advertisement) {
+      advertisement.lastBid = {
+        bidder: req.user._id,
+        quantityEntered: req.body.quantityEntered,
+        biddingValue: req.body.biddingValue
+      }
+      advertisement.save(function(err, advertisement){
+        if(err)
+          return done(err);
+      });
+      console.log(advertisement);
+      res.send(advertisement);
+    })
+    .then(undefined, function(err){
+      if(err)
+        console.log(err);
+    });
+};
+
+function biddingTimeExpired() {
+  var adId = req.params.adId;
+  Advertisement.findById(adId).exec()
+    .then(function(advertisement) {
+      advertisement.biddingStartTime = null;
+      advertisement.biddingStatus = false;
+      advertisement.quantity -= advertisement.lastBid.quantityEntered;
+      if(advertisement.quantity == 0)
+        advertisement.status = false;
+      advertisement.save(function(err, advertisement){
+        if(err)
+          return err;
+      });
+      return [advertisement];
+    })
+    .then(function(result){
+      var advertisement = result[0], soldItems = [];
+      return User.findById(advertisement.userId).exec()
+        .then(function(seller){
+          if(seller.soldItems.length > 0)
+            soldItems = seller.soldItems;
+          soldItems.push({
+            adId: advertisement._id,
+            quantityEntered: advertisement.lastBid.quantityEntered
+          });
+          seller.soldItems = [];
+          seller.soldItems = soldItems;
+          seller.save(function(err, seller){
+            if(err)
+              return err;
+          });
+          return [advertisement, seller];
+        })//seller
+    })
+    .then(function(result){
+      var advertisement = result[0],
+          seller = result[1],
+          purchasedItems = [];
+      return User.findById(advertisement.lastBid.bidder).exec()
+        .then(function(buyer){
+          if(buyer.purchasedItems.length > 0)
+            purchasedItems = buyer.purchasedItems;
+          purchasedItems.push({
+            adId: advertisement._id,
+            quantityEntered: advertisement.lastBid.quantityEntered
+          });
+          buyer.purchasedItems = [];
+          buyer.purchasedItems = purchasedItems;
+          buyer.save(function(err, buyer){
+            if(err)
+              console.log(err);
+          });
+          result.push(buyer);
+          console.log(result);
+          res.send(result);
+        })//buyer
+    })
+    .then(undefined, function(err){
+      if(err)
+        console.log(err);
+    });
+};
+
+//repeated executing function
+(function bidTimer() {
+  var expiryDate = new Date();
+  Advertisement.find()
+    .exec(function(err, advertisements){
+      if(err)
+        console.log(err);
+      for(var i=0; i<advertisements.length; i++){
+        if(advertisements[i].biddingStartTime) {
+          expiryDate.setDate(advertisements[i].biddingStartTime.getDate() + 2);
+          if(expiryDate < advertisements[i].biddingStartTime)
+            biddingTimeExpired(advertisements[i]._id);
+        }
+      }
+      console.log("bidtimer");
+
+      //repeat this function again
+      setTimeout(bidTimer(), 50000000);
+    });
+})();
+
 
 //
 //

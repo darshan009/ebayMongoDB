@@ -34,8 +34,9 @@ angular.module('AdvertisementCtrl', [])
           console.log("success placing bid");
           console.log(data);
           if(data.bids) {
-            $scope.lastEnteredBid = data.bids.pop();
+            $scope.lastEnteredBid = data.lastBid.biddingValue;
           }
+          window.location.reload();
         }).error(function(error) {
           console.log("Error posting data in currentUser");
         });

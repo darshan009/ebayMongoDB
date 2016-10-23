@@ -94,9 +94,14 @@ app.post('/api/shoppingCart', userController.shoppingCart);
 app.post('/api/addToCart', userController.addToCart);
 app.post('/api/removeFromCart', userController.removeFromCart)
 
+//bidding
+app.post('/api/placeBid', userController.placeBid);
+
 //checkout
 app.post('/api/checkout', userController.checkout);
 
+
+// app.post('/biddingTimeExpired/:adId', userController.biddingTimeExpired);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
