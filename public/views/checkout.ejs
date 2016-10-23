@@ -63,7 +63,7 @@
       </div>
       <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
-          <button type="submit" ng-disabled = "creditCardNumber < 1000000000000000 || creditCardNumber > 9999999999999999 || creditCardNumber == null || cvv < 100 || cvv > 999" class="btn btn-success" ng-click="checkout()">Checkout</button>
+          <button type="submit" ng-disabled = "creditCardNumber < 1000000000000000 || creditCardNumber > 9999999999999999 || creditCardNumber == null || cvv < 100 || cvv > 999 || cvv == null" class="btn btn-success" ng-click="checkout()">Checkout</button>
         </div>
       </div>
     </fieldset>

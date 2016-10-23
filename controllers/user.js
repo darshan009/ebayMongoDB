@@ -235,47 +235,163 @@ exports.placeBid = function(req, res) {
 exports.checkout = function(req, res) {
   console.log("-----------checkout-------");
   console.log(req.session.shoppingCart);
-  var shoppingCartId = 0, quantityEntered = 0;
+  var shoppingCartId = 0, quantityEntered = 0, purchasedItems = [], soldItems = [];
+
+  //loop through all the items in the cart
   for(var i=0; i<req.session.shoppingCart.length; i++) {
     shoppingCartId = req.session.shoppingCart[i].id;
-    quantityEntered = req.session.shoppingCart[i].quantityEntered;
-    User.findById(req.user._id)
+    quantityEntered = parseInt(req.session.shoppingCart[i].quantityEntered);
+    User.findById(req.user._id).exec()
       .then(function(user){
-      // Advertisement.findById(shoppingCartId).exec(function(err, advertisement){
-
-        //reflect the quantity in the advertisement
-        // advertisement.quantity -= quantityEntered;
-        // if(advertisement.quantity == 0)
-        //   advertisement.status = false;
         //push advertisement into purchased list of user
-        // if(!user.purchasdItems)
-        //   user.purchasdItems = [];
-        // user.purchasdItems.push({
-        //   adId: shoppingCartId
-        //   // quantityEntered: quantityEntered
-        // });
-        // advertisement.save(function(err, advertisement){
-        //   if(err)
-        //     return err;
-        // });
-        // console.log(advertisement);
-        console.log(user.purchasdItems);
-        user.lastName = "Hello";
+        if(user.purchasedItems.length > 0)
+          purchasedItems = user.purchasedItems;
+        purchasedItems.push({
+          adId: shoppingCartId,
+          quantityEntered: parseInt(quantityEntered)
+        });
+        user.purchasedItems = [];
+        user.purchasedItems = purchasedItems;
         user.save(function(err, user){
           if(err)
             console.log(err);
         });
-        console.log(user);
-      // });
-    })
-    .then(function(err){
-      if(err)
-        console.log(err);
-    });
+        return [user];
+      })
+      .then(function(result){
+        console.log("-------advertisement------");
+        console.log(result);
+        return Advertisement.findById(shoppingCartId)
+          .exec()
+          .then(function(advertisement){
+            //reflect the quantity in the advertisement
+            var user = result[0];
+            advertisement.quantity -= quantityEntered;
+            if(advertisement.quantity == 0)
+              advertisement.status = false;
+            advertisement.save(function(err, advertisement){
+              if(err)
+                return err;
+            });
+            result.push(advertisement);
+            console.log(result);
+            return result;
+          })
+      })
+      .then(function(result){
+        console.log("-------user------");
+        console.log(result);
+
+        var advertisement = result[1],
+            user = result[0];
+        return User.findById(advertisement.userId).exec()
+          .then(function(seller){
+            //push items as sold in sellers account
+            if(seller.soldItems.length > 0)
+              soldItems = seller.soldItems;
+            soldItems.push({
+              adId: shoppingCartId,
+              quantityEntered: parseInt(quantityEntered)
+            });
+            seller.soldItems = [];
+            seller.soldItems = soldItems;
+            seller.save(function(err, seller){
+              if(err)
+                return err;
+            });
+            console.log("-------user------");
+            console.log(user);
+            console.log("-------seller-----");
+            console.log(seller);
+
+            //clear all the items from shoppingCart
+            req.session.shoppingCart = [];
+          });
+      })
+      .then(undefined, function(err){
+        if(err)
+          console.log(err);
+      });
   }
 };
 
+exports.purchasedItems = function(req, res) {
+  var userId = req.user.userId;
+  console.log("in purchasedAd");
+  Advertisement.find({userId: req.user._id}, function(err, advertisements){
+    if(err)
+      return done(err);
+    res.send(advertisements);
+  });
+};
 
+
+
+
+// exports.checkout = function(req, res) {
+//   console.log("-----------checkout-------");
+//   console.log(req.session.shoppingCart);
+//   var shoppingCartId = 0, quantityEntered = 0, purchasedItems = [], soldItems = [];
+//
+//   //loop through all the items in the cart
+//   for(var i=0; i<req.session.shoppingCart.length; i++) {
+//     shoppingCartId = req.session.shoppingCart[i].id;
+//     quantityEntered = parseInt(req.session.shoppingCart[i].quantityEntered);
+//     User.findById(req.user._id)
+//       .then(function(user){
+//       Advertisement.findById(shoppingCartId)
+//       .exec(function(err, advertisement){
+//         User.findById(advertisement.userId).exec(function(err, seller){
+//
+//           //reflect the quantity in the advertisement
+//           advertisement.quantity -= quantityEntered;
+//           if(advertisement.quantity == 0)
+//             advertisement.status = false;
+//           advertisement.save(function(err, advertisement){
+//             if(err)
+//               return err;
+//           });
+//
+//           //push advertisement into purchased list of user
+//           if(user.purchasedItems.length > 0)
+//             purchasedItems = user.purchasedItems;
+//           purchasedItems.push({
+//             adId: shoppingCartId,
+//             quantityEntered: parseInt(quantityEntered)
+//           });
+//           user.purchasedItems = [];
+//           user.purchasedItems = purchasedItems;
+//           user.save(function(err, user){
+//             if(err)
+//               console.log(err);
+//           });
+//
+//           //push items as sold in sellers account
+//           if(seller.soldItems.length > 0)
+//             soldItems = seller.soldItems;
+//           soldItems.push({
+//             adId: shoppingCartId,
+//             quantityEntered: parseInt(quantityEntered)
+//           });
+//           seller.soldItems = [];
+//           seller.soldItems = soldItems;
+//           seller.save(function(err, seller){
+//             if(err)
+//               return err;
+//           });
+//           console.log("-------user------");
+//           console.log(user);
+//           console.log("-------seller-----");
+//           console.log(seller);
+//         });
+//       });
+//     })
+//     .then(function(err){
+//       if(err)
+//         console.log(err);
+//     });
+//   }
+// };
 
 //
 // exports.loadAllAd = function(req, res) {
@@ -295,35 +411,6 @@ exports.checkout = function(req, res) {
 //
 //
 //
-// exports.purchasedAd = function(req, res) {
-//   var userId = req.user.userId;
-//   console.log("in purchasedAd");
-//   if(pool.length != 0) {
-//     var connection = pool.pop();
-//     connection.query("SELECT * FROM Purchased WHERE userId = ?", userId, function(err, rows){
-//       if(err)
-//         console.log(err);
-//       console.log(rows);
-//       pool.push(connection);
-//       res.send(rows);
-//     });
-//   }
-// };
-//
-// exports.loadSingleAdvertisement = function(req, res) {
-//   console.log(req.body.adId"));
-//   if(pool.length != 0) {
-//     var connection = pool.pop();
-//     connection.query("SELECT * FROM Advertisement WHERE id = ?", req.body.adId"), function(err, rows){
-//       if(err)
-//         console.log(err);
-//       console.log(rows);
-//       pool.push(connection);
-//       console.log("---------in loadSingleAdvertisement----------");
-//       res.send(rows);
-//     });
-//   }
-// };
 //
 //
 // // exports.getBids = function(req, res) {
@@ -352,7 +439,3 @@ exports.checkout = function(req, res) {
 //   console.log("hello");
 // };
 //
-// exports.getPersonalDetails = function(req, res){
-//   console.log("in getPersonalDetails");
-//   res.send(req.user);
-// };

@@ -21,6 +21,10 @@ var userSchema = new mongoose.Schema({
   purchasedItems: [{
     adId: { type: mongoose.Schema.Types.ObjectId, ref: 'Advertisement' },
     quantityEntered: Number
+  }],
+  soldItems: [{
+    adId: { type: mongoose.Schema.Types.ObjectId, ref: 'Advertisement' },
+    quantityEntered: Number
   }]
 });
 
