@@ -71,39 +71,38 @@ app.get('*', function(req, res){
 //api calls
 app.post('/', userController.allSellingAdvertisement);
 app.post('/api/login', userController.postLogin);
-app.delete('/api/login', userController.deleteUser);
+app.delete('/api/user/:id', userController.deleteUser);
 
 app.post('/api/signup', userController.postSignUp);
 
-app.post('/api/currentUser', userController.getCurrentUser);
-app.post('/api/addUser', userController.postSignUp);
-app.get('/logout', userController.getLogout);
+app.post('/api/currentUser', userController.isLoggedIn, userController.getCurrentUser);
+app.post('/api/addUser', userController.isLoggedIn, userController.postSignUp);
+app.get('/logout', userController.isLoggedIn, userController.getLogout);
 
 //verify if user is logged in
 app.post('/isLoggedIn', userController.isLoggedIn);
 
 //profile routes
-app.post('/api/addAdvertisement', userController.postPublishAd);
-app.post('/api/allAdvertisement', userController.allAdvertisement);
-app.post('/api/getAdvertisementDetail/:adId', userController.getAdvertisementDetail);
-app.post('/api/soldItems', userController.soldItems);
-app.post('/api/purchasedItems', userController.purchasedItems);
+app.post('/api/addAdvertisement', userController.isLoggedIn, userController.postPublishAd);
+app.post('/api/allAdvertisement', userController.isLoggedIn, userController.allAdvertisement);
+app.post('/api/getAdvertisementDetail/:adId', userController.isLoggedIn, userController.getAdvertisementDetail);
+app.post('/api/soldItems', userController.isLoggedIn, userController.soldItems);
+app.post('/api/purchasedItems', userController.isLoggedIn, userController.purchasedItems);
 
 //shoppingCart
-app.post('/api/shoppingCart', userController.shoppingCart);
-app.post('/api/addToCart', userController.addToCart);
-app.post('/api/removeFromCart', userController.removeFromCart)
+app.post('/api/shoppingCart', userController.isLoggedIn, userController.shoppingCart);
+app.post('/api/addToCart', userController.isLoggedIn, userController.addToCart);
+app.post('/api/removeFromCart', userController.isLoggedIn, userController.removeFromCart)
 
 //bidding
-app.post('/api/placeBid', userController.placeBid);
+app.post('/api/placeBid', userController.isLoggedIn, userController.placeBid);
 
 //checkout
-app.post('/api/checkout', userController.checkout);
+app.post('/api/checkout', userController.isLoggedIn, userController.checkout);
 
 //user activity logs
-app.post('/api/userLogs', userController.userLogs);
+app.post('/api/userLogs', userController.isLoggedIn, userController.userLogs);
 
-// app.post('/biddingTimeExpired/:adId', userController.biddingTimeExpired);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');

@@ -120,7 +120,7 @@ exports.isLoggedIn = function(req, res, next) {
   if(req.user)
     return next();
   else
-    res.send(false);
+    res.end("You need to login to access this page");
 };
 
 
@@ -172,7 +172,7 @@ exports.allSellingAdvertisement = function(req, res){
   Advertisement.find().exec(function(err, advertisements){
     console.log("------in allSellingAdvertisement----");
     for(var i=0; i<advertisements.length; i++) {
-      if((advertisements[i].userId).toString() != (userId).toString()) {
+      if((advertisements[i].userId).toString() != (userId).toString() && advertisements[i].status == true) {
         sortedAdvertisement.push(advertisements[i]);
       }
     }
