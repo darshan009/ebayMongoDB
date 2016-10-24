@@ -12,9 +12,16 @@ var advertisementSchema = new mongoose.Schema({
   biddingStartTime: Date,
   lastBid: {
     bidder: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    date: Date,
     quantityEntered: Number,
     biddingValue: Number
-  }
+  },
+  biddingLogs: [{
+    bidder: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    date: Date,
+    quantityEntered: Number,
+    biddingValue: Number
+  }]
 });
 
 module.exports = mongoose.model('Advertisement', advertisementSchema);

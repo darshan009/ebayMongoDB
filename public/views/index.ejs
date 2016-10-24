@@ -1,5 +1,5 @@
 <div class="rmd-container" ng-controller="MainController">
-    <div class="container-fluid">
+    <div class="container-fluid" ng-if = currentUser>
       <div class="jumbotron">
         <h2>Hello {{}}</h2>
         <p>Scroll through the products below.</p>
@@ -26,5 +26,13 @@
 
         </div>
       </div>
+    </div>
+    <div class="rmd-container" ng-if= !currentUser>
+        <div class="container-fluid">
+          <div class="jumbotron">
+            <h2>Hello</h2>
+            <p>Please <a href="/login"><button class="btn btn-primary">Login</button></a> OR <a href="/signup"><button class="btn btn-primary">Signup</button></a> to continue
+          </div>
+        </div>
     </div>
 </div>

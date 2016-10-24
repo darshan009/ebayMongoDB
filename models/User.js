@@ -13,12 +13,6 @@ var userSchema = new mongoose.Schema({
   contactNo : Number,
   location: String,
   lastLoginTime: Date,
-  // bids: {
-  //   adId: { type: mongoose.Schema.Types.ObjectId, ref: 'Advertisement'},
-  //   bidder: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-  //   quantityEntered: Number,
-  //   biddingValue: Number
-  // },
   purchasedItems: [{
     adId: { type: mongoose.Schema.Types.ObjectId, ref: 'Advertisement' },
     quantityEntered: Number

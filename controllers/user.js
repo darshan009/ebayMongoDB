@@ -20,7 +20,7 @@ exports.postLogin = function(req, res, next){
       req.logIn(user, function(err){
         if(err)
           return next(err);
-        this.lastLoginTime = user.lastLoginTime;
+        req.session.lastLoginTime = user.lastLoginTime;
         user.lastLoginTime = Date.now();
         user.save();
         console.log(user);
@@ -58,8 +58,7 @@ exports.postSignUp = function(req,res){
         password: req.body.password,
         birthday: req.body.birthday,
         contactNo: req.body.contactNo,
-        address: req.body.address,
-        location: req.body.location
+        location: req.body.address
     });
     user.save(function(err) {
       if (!err) {
@@ -84,9 +83,23 @@ exports.deleteUser = function(req, res) {
 };
 
 exports.getCurrentUser = function(req, res){
-  // console.log("in getCurrentUser");
+  console.log("--------in getCurrentUser------");
   var userDetails = req.user;
-  userDetails.lastLoginDateTime = this.lastLoginTime;
+  userDetails = {
+    _id: req.user._id,
+    firstName: req.user.firstName,
+    lastName: req.user.lastName,
+    username: req.user.username,
+    email: req.user.email,
+    password: req.user.password,
+    birthday: req.user.birthday,
+    contactNo: req.user.contactNo,
+    address: req.user.address,
+    location: req.user.location,
+    lastLoginDateTime: req.session.lastLoginTime
+  }
+  console.log("--------in getCurrentUser------");
+  console.log(userDetails);
   res.send(userDetails);
 };
 
@@ -148,14 +161,18 @@ exports.allAdvertisement = function(req, res) {
 };
 
 
-
+/*
+ |-----------------------------------------------------------
+ | All advertisements for selling
+ |-----------------------------------------------------------
+*/
 exports.allSellingAdvertisement = function(req, res){
   var userId = req.user._id,
       sortedAdvertisement = [];
   Advertisement.find().exec(function(err, advertisements){
     console.log("------in allSellingAdvertisement----");
     for(var i=0; i<advertisements.length; i++) {
-      if(advertisements[i].userId != userId) {
+      if((advertisements[i].userId).toString() != (userId).toString()) {
         sortedAdvertisement.push(advertisements[i]);
       }
     }
@@ -367,11 +384,26 @@ exports.soldItems = function(req, res) {
 exports.placeBid = function(req, res){
   Advertisement.findById(req.body.adId).exec()
     .then(function(advertisement) {
+      var biddingLogs = [];
       advertisement.lastBid = {
         bidder: req.user._id,
+        date: Date.now(),
         quantityEntered: req.body.quantityEntered,
         biddingValue: req.body.biddingValue
       }
+
+      //biddingLogs
+      if(advertisement.biddingLogs.length > 0)
+        biddingLogs = advertisement.biddingLogs;
+      biddingLogs.push({
+        bidder: req.user._id,
+        date: Date.now(),
+        quantityEntered: req.body.quantityEntered,
+        biddingValue: req.body.biddingValue
+      });
+      advertisement.biddingLogs = [];
+      advertisement.biddingLogs = biddingLogs;
+
       advertisement.save(function(err, advertisement){
         if(err)
           return done(err);
@@ -479,7 +511,6 @@ function biddingTimeExpired() {
  |-----------------------------------------------------------
 */
 exports.userLogs = function(req, res){
-  console.log("------userLogs------");
   var userLogs = new UserLogs({
     user: req.user._id,
     click : req.body.clickEvent,
@@ -488,7 +519,6 @@ exports.userLogs = function(req, res){
   userLogs.save(function(err, userLogs){
     if(err)
       console.log(err);
-    console.log(userLogs);
   });
   res.send(userLogs);
 };

@@ -1,4 +1,4 @@
-<div class="rmd-container">
+<div class="rmd-container" ng-controller="UserController">
   <form class="form-horizontal" method="POST">
     <h3 class="paddingLeft"> About page</h3>
     <h3 class="paddingLeft"> Your last login time is : {{lastLoginTime}}</h3>
@@ -27,7 +27,7 @@
       <label class="col-sm-2 control-label">Birthday:</label>
       <div class="col-sm-3">
         <!-- <input type="text" class="form-control" value="{{email}}" ng-model="email"> -->
-        <label class="control-label">{{currentUser.birthday}}</label>
+        <label class="control-label">{{fullBirthday}}</label>
       </div>
     </div>
     <div class="form-group">
@@ -35,13 +35,6 @@
       <div class="col-sm-3">
         <!-- <input type="text" class="form-control" value="{{email}}" ng-model="email"> -->
         <label class="control-label">{{currentUser.contactNo}}</label>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="col-sm-2 control-label">Address:</label>
-      <div class="col-sm-3">
-        <!-- <input type="text" class="form-control" value="{{email}}" ng-model="email"> -->
-        <label class="control-label">{{currentUser.address}}</label>
       </div>
     </div>
     <div class="form-group">

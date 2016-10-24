@@ -34,12 +34,12 @@
           <a class="navbar-brand" href="/" ng-click="userLogs('Ebay symbol')">Ebay</a>
         </div>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/shoppingCart" class="btn" ng-click="userLogs('Shopping Cart')"><i class="icon-shopping-cart">Cart</i></a></li>
-            <li><a href="/profile" ng-click="userLogs('Profile link')">Profile</a></li>
+            <li><a href="/shoppingCart" class="btn" ng-click="userLogs('Shopping Cart')"><span class="icon-shopping-cart">Cart</span></a></li>
+            <li><a href="/profile/personalDetails" ng-click="userLogs('Profile link')">Profile</a></li>
             <li ng-if= !currentUser><a href="/login">Login</a></li>
             <li class="dropdown" ng-if= currentUser>
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                Welcome {{currentUser.firstName}} {{currentUser.lastName}}
+                {{currentUser.firstName}} {{currentUser.lastName}}
                 <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="/profile" ng-click="userLogs('Profile link')">Profile</a></li>
@@ -53,6 +53,7 @@
 
       <!-- ANGULAR DYNAMIC CONTENT -->
       <div ui-view class="fullPage"></div>
+
 
 
       <!-- Include everything here  -->

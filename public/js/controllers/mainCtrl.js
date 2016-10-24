@@ -3,6 +3,23 @@ angular.module('MainCtrl', [])
 
       $scope.testCheck = "in advertisementId";
 
+
+      //get current user details
+      $http({
+        method : "POST",
+        url : '/api/currentUser'
+      }).success(function(data) {
+        console.log("success currentUser");
+        console.log(data);
+        if(data){
+          $scope.currentUser = data;
+          // $scope.currentUserBirthday = new Date(data.birthday.getYear(), data.birthday.getMonth(), data.birthday.getDate(), 0 , 0, 0, 0);
+          $scope.lastLoginTime = data.lastLogin;
+        }
+      }).error(function(error) {
+        console.log("Error posting data in currentUser");
+      });
+
       /*
        |-----------------------------------------------------------
        | User activity tracking function

@@ -15,8 +15,14 @@ angular.module('UserCtrl', [])
       console.log(data);
       if(data){
         $scope.currentUser = data;
-        // $scope.currentUserBirthday = new Date(data.birthday.getYear(), data.birthday.getMonth(), data.birthday.getDate(), 0 , 0, 0, 0);
-        $scope.lastLoginTime = data.lastLogin;
+        var date = new Date(data.birthday),
+            month = date.getMonth(),
+            year = date.getYear(),
+            day = date.getDate();
+        console.log(year);
+        var fullBirthday = month+'/'+day+'/'+year;
+        $scope.fullBirthday = fullBirthday;
+        $scope.lastLoginTime = data.lastLoginDateTime;
       }
     }).error(function(error) {
       console.log("Error posting data in currentUser");
@@ -168,62 +174,5 @@ angular.module('UserCtrl', [])
     }).error(function(error) {
       console.log("Error posting data");
     });
-
-
-    // // $scope.helloTest = "no";
-    // // $scope.loadAdvertisement = function(adId) {
-    // //   console.log("---------in loadSingleAdvertisement----------");
-    // //   console.log(adId);
-    // //   $scope.helloTest = "lol";
-    // //   $http({
-    // //     method : "POST",
-    // //     url : '/loadSingleAdvertisement',
-    // //     data : {
-    // //       "adId" : adId
-    // //     }
-    // //   }).success(function(data) {
-    // //     console.log("success in purchasedAd");
-    // //     console.log(data);
-    // //     $scope.singleAdData = data[0];
-    // //     console.log($scope.singleAdData);
-    // //     // $state.go('advertisement', {});
-    // //   }).error(function(error) {
-    // //     console.log("Error posting data");
-    // //   });
-    // // };
-    //
-    // $scope.placeBid = function(adId, biddingValue, quantityEntered) {
-    //   $http({
-    //     method : "POST",
-    //     url : '/placeBid',
-    //     data : {
-    //       "adId" : adId,
-    //       "quantityEntered" : quantityEntered,
-    //       "biddingValue" : biddingValue
-    //     }
-    //   }).success(function(data) {
-    //     console.log("success in placeBid");
-    //     console.log(data);
-    //     $scope.quantityEntered = "";
-    //     $scope.biddingValue = "";
-    //     // $state.go('advertisement', {});
-    //   }).error(function(error) {
-    //     console.log("Error posting data");
-    //   });
-    // };
-    //
-    // // $scope.loadBid = function() {
-    // //   $http({
-    // //     method : "GET",
-    // //     url : '/getBids'
-    // //   }).success(function(data) {
-    // //     console.log("in load Bid");
-    // //     console.log(data);
-    // //     $scope.loadBid = data;
-    // //   }).error(function(error) {
-    // //     console.log("Error posting data");
-    // //   });
-    // // };
-
 
 });
