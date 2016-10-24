@@ -1,6 +1,29 @@
 angular.module('AdvertisementCtrl', [])
   .controller('AdvertisementController', function($scope, $http, $state, $stateParams) {
 
+
+    /*
+     |-----------------------------------------------------------
+     | User activity tracking function
+     |-----------------------------------------------------------
+    */
+    $scope.userLogs = function(clickEvent){
+      $http({
+        method : "POST",
+        url : '/api/userLogs',
+        data : {
+          "clickEvent": clickEvent
+        }
+      }).success(function(data) {
+        console.log("success userLogs");
+        console.log(data);
+      }).error(function(error) {
+        console.log("Error posting data in user logs");
+      });
+    };
+
+
+
       //get Advertisement detail for selling
       $http({
         method : "POST",

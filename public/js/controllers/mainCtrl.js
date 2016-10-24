@@ -3,6 +3,27 @@ angular.module('MainCtrl', [])
 
       $scope.testCheck = "in advertisementId";
 
+      /*
+       |-----------------------------------------------------------
+       | User activity tracking function
+       |-----------------------------------------------------------
+      */
+      $scope.userLogs = function(clickEvent){
+        $http({
+          method : "POST",
+          url : '/api/userLogs',
+          data : {
+            "clickEvent": clickEvent
+          }
+        }).success(function(data) {
+          console.log("success userLogs");
+          console.log(data);
+        }).error(function(error) {
+          console.log("Error posting data in user logs");
+        });
+      };
+
+
       //update angular cart from session everytime
         $http({
           method : "POST",

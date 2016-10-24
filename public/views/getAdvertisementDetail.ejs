@@ -1,5 +1,5 @@
 <div class="container-fluid marginAbove" ng-controller="AdvertisementController">
-  <a href="/"><button class="btn btn-info" style="float: left; margin-top: 60px"> Back </button></a>
+  <a href="/" ng-click="userLogs('Back button to homepage from product page')"><button class="btn btn-info" style="float: left; margin-top: 60px"> Back </button></a>
   </br></br></br>
   <div class="row-fluid" style="margin-top: 100px">
     <div class="col-sm-4" style="margin-right: 30px">
@@ -15,7 +15,7 @@
               <p class="card-text">Details - {{allSellingAdvertisement.specification}}</p>
               <p class="card-text">Shipping from - {{allSellingAdvertisement.shipping}}</p>
               <p class="card-text">Price - {{allSellingAdvertisement.price}}</p>
-              Enter your quantity: <input type="number" class="form-control"  ng-model="quantityEntered" ng-init="quantityEntered = 1" value="1">
+              Enter your quantity: <input type="number" class="form-control"  ng-model="quantityEntered" ng-init="quantityEntered = 1" value="1" ng-click="userLogs('Enter product quantity')">
               <span ng-if="quantityEntered > allSellingAdvertisement.quantity"> <b>Error: Your quantity cannot be greater than the original quantity </b></span>
             </br>
               <p class="card-text" ng-if="lastEnteredBid">
@@ -27,11 +27,11 @@
               <p class="card-text" ng-if="bidding">
                 <b>(Note: Your bid value has to be greater than the last bid)</b>
                 </br>
-                Bid: <input type="number" class="form-control"  ng-model="biddingValueEntered" ng-init="biddingValueEntered = 0" value="1">
+                Bid: <input type="number" class="form-control"  ng-model="biddingValueEntered" ng-click="userLogs('Enter bid value')" ng-init="biddingValueEntered = 0" value="1">
               </br>
-                <a href="#" class="btn btn-primary" ng-disabled="biddingValueEntered < allSellingAdvertisement.price" ng-click="placeBid(quantityEntered, biddingValueEntered)">Place your Bid</a>
+                <a href="#" class="btn btn-primary" ng-disabled="biddingValueEntered < allSellingAdvertisement.price" ng-click="placeBid(quantityEntered, biddingValueEntered); userLogs('Place bids')">Place your Bid</a>
               </p>
-              <a href="#" class="btn btn-primary" ng-if="!bidding" ng-disabled="quantityEntered > allSellingAdvertisement.quantity || quantityEntered == 0 || quantityEntered == null" ng-click="addToCart(quantityEntered)">Add to Cart</a>
+              <a href="#" class="btn btn-primary" ng-if="!bidding" ng-disabled="quantityEntered > allSellingAdvertisement.quantity || quantityEntered == 0 || quantityEntered == null" ng-click="addToCart(quantityEntered); userLogs('Add to cart')">Add to Cart</a>
             </div>
           </div>
         </div>

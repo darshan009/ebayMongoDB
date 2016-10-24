@@ -1,17 +1,17 @@
 <div class="row fullPage" ng-controller="UserController">
   <div class="col-sm-3 col-md-2 sidebar" style="margin-top: 70px">
     <ul class="nav nav-sidebar">
-      <li><a ui-sref="profile.personalDetails" href="#">About</a></li>
+      <li><a ui-sref="profile.personalDetails" ng-click="userLogs('AboutPage')" href="#">About</a></li>
     </ul>
     </br>
     <ul class="nav nav-sidebar">
-      <li><a ui-sref="profile.allAdvertisement" ng-click="allAdvertisement()" href="#">All Advertisement</a></li>
-      <li><a ui-sref="profile.addAdvertisement" href="#">Add Advertisement</a></li>
+      <li><a ui-sref="profile.allAdvertisement" ng-click="allAdvertisement(); userLogs('All Advertisement')" href="#">All Advertisement</a></li>
+      <li><a ui-sref="profile.addAdvertisement" ng-click="userLogs('Add Advertisement')" href="#">Add Advertisement</a></li>
     </ul>
     </br>
     <ul class="nav nav-sidebar">
-      <li><a ui-sref="profile.itemsPurchased" href="#">Items purchased</a></li>
-      <li><a ui-sref="profile.itemsSold" href="#">Items sold</a></li>
+      <li><a ui-sref="profile.itemsPurchased" ng-click="userLogs('Items Purchased')" href="#">Items purchased</a></li>
+      <li><a ui-sref="profile.itemsSold" ng-click="userLogs('Items Sold')" href="#">Items sold</a></li>
     </ul>
   </div>
   <div class="container col-sm-9 profileView" ui-view="profileView">

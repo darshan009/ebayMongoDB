@@ -1,5 +1,6 @@
 var passport = require('passport'),
     User = require('../models/User'),
+    UserLogs = require('../models/UserLogs'),
     Advertisement = require('../models/Advertisement'),
     lastLoginTime;
 
@@ -467,3 +468,27 @@ function biddingTimeExpired() {
 //       setTimeout(bidTimer(), 50000000);
 //     });
 // })();
+
+
+
+
+
+/*
+ |-----------------------------------------------------------
+ | User logs
+ |-----------------------------------------------------------
+*/
+exports.userLogs = function(req, res){
+  console.log("------userLogs------");
+  var userLogs = new UserLogs({
+    user: req.user._id,
+    click : req.body.clickEvent,
+    date : Date.now()
+  });
+  userLogs.save(function(err, userLogs){
+    if(err)
+      console.log(err);
+    console.log(userLogs);
+  });
+  res.send(userLogs);
+};

@@ -31,19 +31,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Ebay</a>
+          <a class="navbar-brand" href="/" ng-click="userLogs('Ebay symbol')">Ebay</a>
         </div>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/shoppingCart" class="btn"><i class="icon-shopping-cart">Cart</i></a></li>
-            <li><a href="/profile">Profile</a></li>
+            <li><a href="/shoppingCart" class="btn" ng-click="userLogs('Shopping Cart')"><i class="icon-shopping-cart">Cart</i></a></li>
+            <li><a href="/profile" ng-click="userLogs('Profile link')">Profile</a></li>
             <li ng-if= !currentUser><a href="/login">Login</a></li>
             <li class="dropdown" ng-if= currentUser>
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Welcome {{currentUser.firstName}} {{currentUser.lastName}}
                 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/logout">Logout</a></li>
+                <li><a href="/profile" ng-click="userLogs('Profile link')">Profile</a></li>
+                <li><a href="/logout" ng-click="userLogs('Logout')">Logout</a></li>
               </ul>
             </li>
           </ul>

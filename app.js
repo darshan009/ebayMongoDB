@@ -100,6 +100,8 @@ app.post('/api/placeBid', userController.placeBid);
 //checkout
 app.post('/api/checkout', userController.checkout);
 
+//user activity logs
+app.post('/api/userLogs', userController.userLogs);
 
 // app.post('/biddingTimeExpired/:adId', userController.biddingTimeExpired);
 // catch 404 and forward to error handler
