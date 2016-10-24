@@ -48,10 +48,6 @@ exports.getUsers = function(req, res, next){
 
 
 //signup
-exports.getSignUp = function(req, res, next){
-  res.send(true);
-};
-
 exports.postSignUp = function(req,res){
     var user = new User({
         firstName: req.body.firstName,
@@ -452,52 +448,22 @@ function biddingTimeExpired() {
 };
 
 //repeated executing function
-(function bidTimer() {
-  var expiryDate = new Date();
-  Advertisement.find()
-    .exec(function(err, advertisements){
-      if(err)
-        console.log(err);
-      for(var i=0; i<advertisements.length; i++){
-        if(advertisements[i].biddingStartTime) {
-          expiryDate.setDate(advertisements[i].biddingStartTime.getDate() + 2);
-          if(expiryDate < advertisements[i].biddingStartTime)
-            biddingTimeExpired(advertisements[i]._id);
-        }
-      }
-      console.log("bidtimer");
-
-      //repeat this function again
-      setTimeout(bidTimer(), 50000000);
-    });
-})();
-
-
+// (function bidTimer() {
+//   var expiryDate = new Date();
+//   Advertisement.find()
+//     .exec(function(err, advertisements){
+//       if(err)
+//         console.log(err);
+//       for(var i=0; i<advertisements.length; i++){
+//         if(advertisements[i].biddingStartTime) {
+//           expiryDate.setDate(advertisements[i].biddingStartTime.getDate() + 2);
+//           if(expiryDate < advertisements[i].biddingStartTime)
+//             biddingTimeExpired(advertisements[i]._id);
+//         }
+//       }
+//       console.log("bidtimer");
 //
-//
-// // exports.getBids = function(req, res) {
-// //   console.log("---------in getBids----------");
-// //   var fullData = [];
-// //   pool.getConnection(function(err, connection){
-// //     connection.query("SELECT * FROM Bidding WHERE userId = ?", req.user.userId, function(err, rows){
-// //       if(err)
-// //         console.log(err);
-// //       console.log("bidding all data");
-// //       console.log(rows);
-// //       for(var i=0; i<rows.length; i++) {
-// //         connection.query("SELECT * FROM Advertisement WHERE id = ?", rows[i].adId, function(err, row){
-// //           if(err)
-// //             console.log(err);
-// //           fullData.push(row[0]);
-// //         });
-// //       }
-// //       console.log(fullData);
-// //       res.send(fullData);
-// //     });
-// //   });
-// // };
-//
-// exports.updateBiddingAfter = function(req, res) {
-//   console.log("hello");
-// };
-//
+//       //repeat this function again
+//       setTimeout(bidTimer(), 50000000);
+//     });
+// })();
