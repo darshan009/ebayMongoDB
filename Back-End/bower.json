@@ -1,0 +1,29 @@
+{
+  "name": "ebaymongodb",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "Darshan Sapaliga"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/darshansapaliga/ebayMongoDB",
+  "moduleType": [
+    "node"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "latest",
+    "font-awesome": "latest",
+    "animate.css": "latest",
+    "angular": "latest",
+    "angular-route": "latest",
+    "angular-ui-router": "~0.3.1"
+  }
+}

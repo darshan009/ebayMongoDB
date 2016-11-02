@@ -1,0 +1,48 @@
+<div class="rmd-container" ng-controller="UserController">
+  <form class="form-horizontal" method="POST">
+    <h3 class="paddingLeft"> About page</h3>
+    <h3 class="paddingLeft"> Your last login time is : {{lastLoginTime}}</h3>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">First Name:</label>
+      <div class="col-sm-3">
+        <!-- <input type="text" class="form-control" value="{{firstName}}" ng-model="firstName"> -->
+        <label class="control-label">{{currentUser.firstName}}</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Last Name:</label>
+      <div class="col-sm-3">
+        <!-- <input type="text" class="form-control" value="{{lastName}}" ng-model="lastName"> -->
+        <label class="control-label">{{currentUser.lastName}}</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Email:</label>
+      <div class="col-sm-3">
+        <!-- <input type="text" class="form-control" value="{{email}}" ng-model="email"> -->
+        <label class="control-label">{{currentUser.email}}</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Birthday:</label>
+      <div class="col-sm-3">
+        <!-- <input type="text" class="form-control" value="{{email}}" ng-model="email"> -->
+        <label class="control-label">{{fullBirthday}}</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Contact No:</label>
+      <div class="col-sm-3">
+        <!-- <input type="text" class="form-control" value="{{email}}" ng-model="email"> -->
+        <label class="control-label">{{currentUser.contactNo}}</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Location:</label>
+      <div class="col-sm-3">
+        <!-- <input type="text" class="form-control" value="{{email}}" ng-model="email"> -->
+        <label class="control-label">{{currentUser.location}}</label>
+      </div>
+    </div>
+  </form>
+</div>

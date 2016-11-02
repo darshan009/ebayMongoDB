@@ -1,0 +1,27 @@
+<div class="container-fluid" ng-controller="MainController">
+  <div class="jumbotron">
+    <h2>Your Shopping Cart</h2>
+  </div>
+  <div class="col-md-8">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Specification</th>
+            <th>Quantity Selected</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat = "eachAd in shoppingCart">
+            <td> {{eachAd.name}}</td>
+            <td> {{eachAd.specification}}</td>
+            <td> {{eachAd.quantityEntered}}</td>
+            <td> {{eachAd.prices}}</td>
+            <td><button class="btn btn-primary" ng-click="removeRow(eachAd.id)">Remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="btn btn-primary" ui-sref="checkout">Checkout</button>
+  </div>
+</div>

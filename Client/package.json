@@ -1,0 +1,38 @@
+{
+  "name": "ebaymongodb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darshansapaliga/ebayMongoDB.git"
+  },
+  "author": "Darshan Sapaliga",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/darshansapaliga/ebayMongoDB/issues"
+  },
+  "homepage": "https://github.com/darshansapaliga/ebayMongoDB#readme",
+  "dependencies": {
+    "amqp": "^0.2.6",
+    "body-parser": "^1.14.1",
+    "cookie-parser": "^1.4.0",
+    "ejs": "*",
+    "express": "^4.13.3",
+    "connect-mongo": "^0.8.2",
+    "express-session": "^1.12.1",
+    "mongoose": "^4.6.5",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.1.2"
+  }
+}

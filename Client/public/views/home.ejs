@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+
+    <title>Starter Node and Angular</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
+    <script src="libs/bootstrap/dist/js/boostrap.min.js"></script>
+    <script src="libs/bootstrap/dist/fonts/glyphicons-halflings-regular.eot"></script>
+    <script src="libs/bootstrap/dist/fonts/glyphicons-halflings-regular.svg"></script>
+    <script src="libs/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf"></script>
+    <script src="libs/bootstrap/dist/fonts/glyphicons-halflings-regular.woff"></script>
+    <script src="libs/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2"></script>
+    <link rel="stylesheet" href="styles/styles.css">
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+     <!-- custom styles -->
+</head>
+<body ng-app="ebayApp" ng-controller="UserController">
+  <div class="container">
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/" ng-click="userLogs('Ebay symbol')">Ebay</a>
+        </div>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/shoppingCart" class="btn" ng-click="userLogs('Shopping Cart')"><span class="icon-shopping-cart">Cart</span></a></li>
+            <li><a href="/profile/personalDetails" ng-click="userLogs('Profile link')">Profile</a></li>
+            <li ng-if= !currentUser><a href="/login">Login</a></li>
+            <li class="dropdown" ng-if= currentUser>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                {{currentUser.firstName}} {{currentUser.lastName}}
+                <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/profile" ng-click="userLogs('Profile link')">Profile</a></li>
+                <li><a href="/logout" ng-click="userLogs('Logout')">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+      <!-- ANGULAR DYNAMIC CONTENT -->
+      <div ui-view class="fullPage"></div>
+
+
+
+      <!-- Include everything here  -->
+      <!-- JS -->
+      <script src="../libs/angular/angular.min.js"></script>
+      <script src="../libs/angular-route/angular-route.min.js"></script>
+      <script src="../libs/angular-ui-router/release/angular-ui-router.min.js"></script>
+
+      <!-- ANGULAR CUSTOM -->
+      <script src="../js/controllers/mainCtrl.js"></script>
+      <script src="../js/controllers/userCtrl.js"></script>
+      <script src="../js/controllers/advertisementCtrl.js"></script>
+      <script src="../js/services/UserService.js"></script>
+      <script src="../js/appRoutes.js"></script>
+      <script src="../js/app.js"></script>
+
+  </div>
+</body>
+</html>

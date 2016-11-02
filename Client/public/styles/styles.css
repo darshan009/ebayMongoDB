@@ -1,0 +1,51 @@
+.center {
+    margin-left: 400px;
+    margin-top: 70px;
+    width: 600px;
+    padding: 30px;
+    background-color: #D8D8D8;
+}
+
+body {
+  /*padding: 30px;*/
+  background-color: #f3f3f3;
+}
+
+.profileView {
+  background-color: white;
+  padding: 5px;
+  margin-top: 90px;
+}
+
+.paddingLeft {
+  padding-left: 50px;
+}
+
+.cardCustom {
+  background-color: white;
+  margin: 20px;
+  border-color: #f3f3f3;
+}
+
+.cardHeader {
+  background-color:
+}
+
+.marginAbove {
+  maring-top: 30px;
+}
+
+.sidebarCustom {
+  background-color: #f3f3f3;
+  height: 100%;
+}
+
+.fullPage {
+  height: 100%;
+  width: 100%;
+}
+
+.product-image {
+  width: 450px;
+  height: 250px;
+}

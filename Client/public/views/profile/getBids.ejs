@@ -1,0 +1,23 @@
+<div class="rmd-container" ng-controller="profile">
+  <h3> All Your Bids </h1></br>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Shipping from</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th> Bid Value </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat = "eachAd in loadBid">
+        <td> {{eachAd.name}}</td>
+        <td> {{eachAd.shipping}}</td>
+        <td> {{eachAd.quantity}}</td>
+        <td> {{eachAd.price}}</td>
+        <td> {{eachAd.biddingValue}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
