@@ -9,31 +9,48 @@ var mq_client = require('../rpc/client'),
 */
 
 exports.postLogin = function(req, res, next){
+  //rabbitmq message call
+  var user = {
+    email: req.body.email
+  }
+  mq_client.make_request('getUser_queue', user, function(err, results){
+    console.log("in getUser_queue "+results);
+    if(err)
+      throw err;
 
-    passport.authenticate('local', function(err, user, info){
-      if (err)
-        return next(err);
-      if(!user)
-        res.send(false);
-      req.logIn(user, function(err){
-        if(err)
+    //passport section only if user found
+    if(results)
+      passport.authenticate('local', function(err, user, info){
+        if (err)
           return next(err);
-        req.session.lastLoginTime = user.lastLoginTime;
-
-        //make a rpc call to save user details
-        var lastLoginTimeDetails = {
-            userId: user._id
-          }
-        mq_client.make_request('lastLoginTime_queue', lastLoginTimeDetails, function(err, results){
+        if(!user)
+          res.send(user);
+          console.log("--------------in poassssport authenticate------------");
+        console.log(user);
+        req.logIn(user, function(err){
           if(err)
-            throw err;
-        });
+            return next(err);
+          req.session.lastLoginTime = user.lastLoginTime;
 
-        //create users session shoppingCart
-        req.session.shoppingCart = [];
-        res.send(user);
-      });
-    })(req, res, next);
+          //make a rpc call to save user details
+          var lastLoginTimeDetails = {
+              userId: user._id
+            }
+          mq_client.make_request('lastLoginTime_queue', lastLoginTimeDetails, function(err, results){
+            if(err)
+              throw err;
+          });
+
+          //create users session shoppingCart
+          req.session.shoppingCart = [];
+          res.send(user);
+        });
+      })(req, res, next);
+    else {
+      res.send(false);
+    }
+
+  });
 };
 
 //signup
@@ -48,15 +65,34 @@ exports.postSignUp = function(req,res){
         contactNo: req.body.contactNo,
         location: req.body.address
     };
+
     //rabbitmq message call
-    mq_client.make_request('signup_queue', user, function(err, results){
-      console.log("in login_queue "+results);
+    mq_client.make_request('getUser_queue', user, function(err, results){
+      console.log("in getUser_queue "+results);
       if(err)
         throw err;
-      res.redirect('/login');
+      if(results)
+        res.send(false);
+      else {
+        //rabbitmq message call
+        mq_client.make_request('signup_queue', user, function(err, results){
+          console.log("in signup_queue "+results);
+          if(err)
+            throw err;
+        });
+        res.send(user);
+      }
     });
+};
 
-    res.send(user);
+exports.verifyEmail = function(req, res){
+  //rabbitmq message call
+  mq_client.make_request('verifyEmail_queue', user, function(err, results){
+    console.log("in verifyEmail_queue "+results);
+    if(err)
+      throw err;
+    res.send(results);
+  });
 };
 
 exports.getLogout = function(req, res){
@@ -102,11 +138,11 @@ exports.isLoggedInAngular = function(req, res, next) {
 
 exports.isLoggedIn = function(req, res, next) {
   console.log("--------------------in isLoggedIn-------------");
-  console.log(req.user.firstName);
+  console.log(req.user);
   if(req.user)
     return next();
   else
-    res.send("You need to login to access this page");
+    res.send(false);
 };
 
 

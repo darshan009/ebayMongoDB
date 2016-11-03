@@ -68,12 +68,15 @@ angular.module('UserCtrl', [])
       }).success(function(data) {
         console.log("success login");
         console.log(data);
-        window.location = '/';
+        if(data == false)
+          alert("User not found");
+        else
+          window.location = '/';
         // $locationProvider.path('/login');
       }).error(function(error) {
-        console.log("Error posting data in addToCart");
+        console.log("Error posting data in login");
       });
-    }
+    };
 
     //user signup
     $scope.signup = function() {
@@ -92,9 +95,12 @@ angular.module('UserCtrl', [])
           "location": $scope.location
         }
       }).success(function(data) {
-        console.log("success login");
+        console.log("success signup");
         console.log(data);
-        window.location = '/login';
+        if(data == false)
+          alert("Email already associated with another account");
+        else
+          window.location = '/login';
         // $locationProvider.path('/login');
       }).error(function(error) {
         console.log("Error posting data in addToCart");
@@ -158,7 +164,7 @@ angular.module('UserCtrl', [])
         console.log(data);
         $scope.allAd = data;
       }).error(function(error) {
-        res.end("Error posting data in all Advertisement");
+        console.log("Error posting data in all Advertisement");
       });
     };
 
@@ -175,7 +181,7 @@ angular.module('UserCtrl', [])
       console.log(data);
       $scope.soldItemsData = data;
     }).error(function(error) {
-      res.end("Error posting data");
+      console.log("Error posting data");
     });
 
     $http({

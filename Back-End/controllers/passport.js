@@ -2,7 +2,7 @@ var passport = require('passport'),
     localStrategies = require('passport-local'),
     User = require('../models/User');
 
-    
+
 exports.deserializeUser = function(msg, callback) {
   User.findById(msg.id, function(err, user) {
     var res = {};
@@ -17,13 +17,16 @@ exports.findUserAndAuthenticate = function(msg, callback){
     console.log("passport "+user);
     if(err)
       console.log(err);
-    user.comparePassword(msg.password, function(err, isMatch){
-      console.log(isMatch);
-      if(isMatch)
-        res.user = user;
-      else
-        res.user = null;
-      callback(null, res);
-    });
+    if(!user)
+      callback(null, false);
+    if(user)
+      user.comparePassword(msg.password, function(err, isMatch){
+        console.log(isMatch);
+        if(isMatch)
+          res.user = user;
+        else
+          res.user = null;
+        callback(null, res);
+      });
   });
 };

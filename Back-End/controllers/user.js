@@ -424,10 +424,10 @@ function biddingTimeExpired() {
             biddingTimeExpired(advertisements[i]._id);
         }
       }
-      console.log("bid timer");
+      // console.log("bid timer");
 
       //repeat this function again
-      setTimeout(bidTimer(), 5000);
+      setTimeout(bidTimer(), 500000);
     });
 })();
 
@@ -454,4 +454,21 @@ exports.userLogs = function(msg, callback){
   });
 
   callback(null, userLogs);
+};
+
+
+exports.getUser = function(msg, callback){
+
+  User.findOne({email: msg.email}, function(err, user){
+    if(err)
+      return done(err);
+    console.log("-----------------getUser------------------------------------------");
+    console.log(user);
+    if(user)
+      var userFound = true;
+    else {
+      var userFound = false;
+    }
+    callback(null, userFound);
+  });
 };

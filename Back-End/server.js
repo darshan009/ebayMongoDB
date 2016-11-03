@@ -50,6 +50,27 @@ cnn.on('ready', function(){
 		});
 	});
 
+  cnn.queue('verifyEmail_queue', function(q){
+		q.subscribe(function(message, headers, deliveryInfo, m){
+			util.log(util.format( deliveryInfo.routingKey, message));
+			util.log("Message: "+JSON.stringify(message));
+			util.log("DeliveryInfo: "+JSON.stringify(deliveryInfo));
+			userController.verifyEmail(message, function(err,res){
+        if(err)
+          console.log(err);
+        console.log("------in verifyEmail_queue backend queue calling-----");
+        console.log(res);
+				//return index sent
+				cnn.publish(m.replyTo, res, {
+					contentType:'application/json',
+					contentEncoding:'utf-8',
+					correlationId:m.correlationId
+				});
+			});
+		});
+	});
+
+
   cnn.queue('passport_queue', function(q){
     q.subscribe(function(message, headers, deliveryInfo, m){
       util.log(util.format( deliveryInfo.routingKey, message));
@@ -297,6 +318,26 @@ cnn.on('ready', function(){
         if(err)
           console.log(err);
         console.log("------in placeBid_queue backend queue calling-----");
+        console.log(res);
+        //return index sent
+        cnn.publish(m.replyTo, res, {
+          contentType:'application/json',
+          contentEncoding:'utf-8',
+          correlationId:m.correlationId
+        });
+      });
+    });
+  });
+
+  cnn.queue('getUser_queue', function(q){
+    q.subscribe(function(message, headers, deliveryInfo, m){
+      util.log(util.format( deliveryInfo.routingKey, message));
+      util.log("Message: "+JSON.stringify(message));
+      util.log("DeliveryInfo: "+JSON.stringify(deliveryInfo));
+      userController.getUser(message, function(err,res){
+        if(err)
+          console.log(err);
+        console.log("------in getUser_queue backend queue calling-----");
         console.log(res);
         //return index sent
         cnn.publish(m.replyTo, res, {
