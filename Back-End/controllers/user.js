@@ -411,25 +411,25 @@ function biddingTimeExpired() {
 };
 
 //repeated executing function
-// (function bidTimer() {
-//   var expiryDate = new Date();
-//   Advertisement.find()
-//     .exec(function(err, advertisements){
-//       if(err)
-//         console.log(err);
-//       for(var i=0; i<advertisements.length; i++){
-//         if(advertisements[i].biddingStartTime) {
-//           expiryDate.setDate(advertisements[i].biddingStartTime.getDate() + 4);
-//           if(expiryDate < advertisements[i].biddingStartTime)
-//             biddingTimeExpired(advertisements[i]._id);
-//         }
-//       }
-//       console.log("bidtimer");
-//
-//       //repeat this function again
-//       setTimeout(bidTimer(), 50000000);
-//     });
-// })();
+(function bidTimer() {
+  var expiryDate = new Date();
+  Advertisement.find()
+    .exec(function(err, advertisements){
+      if(err)
+        console.log(err);
+      for(var i=0; i<advertisements.length; i++){
+        if(advertisements[i].biddingStartTime) {
+          expiryDate.setDate(advertisements[i].biddingStartTime.getDate() + 4);
+          if(expiryDate < advertisements[i].biddingStartTime)
+            biddingTimeExpired(advertisements[i]._id);
+        }
+      }
+      console.log("bid timer");
+
+      //repeat this function again
+      setTimeout(bidTimer(), 5000);
+    });
+})();
 
 
 
@@ -452,6 +452,6 @@ exports.userLogs = function(msg, callback){
     if(err)
       console.log(err);
   });
-  
+
   callback(null, userLogs);
 };
