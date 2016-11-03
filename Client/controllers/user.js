@@ -60,9 +60,9 @@ exports.postSignUp = function(req,res){
 };
 
 exports.getLogout = function(req, res){
-  req.logout();
-  // res.send(true);
-  res.redirect('/');
+  req.session.destroy(function(err){
+    res.send("success");
+  });
 };
 
 exports.deleteUser = function(req, res) {
@@ -101,10 +101,12 @@ exports.isLoggedInAngular = function(req, res, next) {
 };
 
 exports.isLoggedIn = function(req, res, next) {
+  console.log("--------------------in isLoggedIn-------------");
+  console.log(req.user.firstName);
   if(req.user)
     return next();
   else
-    res.end("You need to login to access this page");
+    res.send("You need to login to access this page");
 };
 
 

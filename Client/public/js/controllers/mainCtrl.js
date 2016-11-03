@@ -13,6 +13,28 @@ angular.module('MainCtrl', [])
         console.log(data);
         if(data){
           $scope.currentUser = data;
+          var date = new Date(data.birthday),
+              month = date.getMonth(),
+              year = date.getYear(),
+              day = date.getDate();
+          console.log(year);
+          var fullBirthday = month+'/'+day+'/'+year;
+          $scope.fullBirthday = fullBirthday;
+          $scope.lastLoginTime = data.lastLoginDateTime;
+        }
+      }).error(function(error) {
+        console.log("Error posting data in currentUser");
+      });
+
+      //get current user details
+      $http({
+        method : "POST",
+        url : '/api/currentUser'
+      }).success(function(data) {
+        console.log("success currentUser");
+        console.log(data);
+        if(data){
+          $scope.currentUser = data;
           // $scope.currentUserBirthday = new Date(data.birthday.getYear(), data.birthday.getMonth(), data.birthday.getDate(), 0 , 0, 0, 0);
           $scope.lastLoginTime = data.lastLogin;
         }

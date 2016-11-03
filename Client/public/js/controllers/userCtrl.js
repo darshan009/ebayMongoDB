@@ -28,26 +28,25 @@ angular.module('UserCtrl', [])
       console.log("Error posting data in currentUser");
     });
 
-
     /*
      |-----------------------------------------------------------
      | User activity tracking function
      |-----------------------------------------------------------
     */
-    $scope.userLogs = function(clickEvent){
-      $http({
-        method : "POST",
-        url : '/api/userLogs',
-        data : {
-          "clickEvent": clickEvent
-        }
-      }).success(function(data) {
-        console.log("success userLogs");
-        console.log(data);
-      }).error(function(error) {
-        console.log("Error posting data in user logs");
-      });
-    };
+    // $scope.userLogs = function(clickEvent){
+    //   $http({
+    //     method : "POST",
+    //     url : '/api/userLogs',
+    //     data : {
+    //       "clickEvent": clickEvent
+    //     }
+    //   }).success(function(data) {
+    //     console.log("success userLogs");
+    //     console.log(data);
+    //   }).error(function(error) {
+    //     console.log("Error posting data in user logs");
+    //   });
+    // };
 
 
 
@@ -97,6 +96,20 @@ angular.module('UserCtrl', [])
         console.log(data);
         window.location = '/login';
         // $locationProvider.path('/login');
+      }).error(function(error) {
+        console.log("Error posting data in addToCart");
+      });
+    };
+
+    //user logout
+    $scope.logout = function() {
+      console.log("---------------------in logout");
+      $http({
+        method : "POST",
+        url : '/api/logout'
+      }).success(function(data) {
+        console.log("success logout");
+        window.location = '/';
       }).error(function(error) {
         console.log("Error posting data in addToCart");
       });

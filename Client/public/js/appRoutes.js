@@ -15,9 +15,9 @@ angular.module('appRoutes', ['ui.router'])
         templateUrl : '../views/login.ejs',
         controller: 'UserController'
       })
-      .state('signup', {
-        url : '/signup',
-        templateUrl : '../views/signup.ejs',
+      .state('logout', {
+        url : '/logout',
+        templateUrl : '../views/logout.ejs',
         controller: 'UserController'
       })
 

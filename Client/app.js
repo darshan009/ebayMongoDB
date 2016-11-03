@@ -35,11 +35,13 @@ var userController = require('./controllers/user');
 
 //frontend route
 app.get('*', function(req, res){
-  res.render('home');
+  res.render('home', {
+    currentUser: req.user
+  });
 });
 
 //api calls
-app.post('/', userController.allSellingAdvertisement);
+app.post('/', userController.isLoggedIn, userController.allSellingAdvertisement);
 app.post('/api/login', userController.postLogin);
 app.delete('/api/user/:id', userController.deleteUser);
 
@@ -47,7 +49,7 @@ app.post('/api/signup', userController.postSignUp);
 
 app.post('/api/currentUser', userController.isLoggedIn, userController.getCurrentUser);
 app.post('/api/addUser', userController.isLoggedIn, userController.postSignUp);
-app.get('/logout', userController.isLoggedIn, userController.getLogout);
+app.post('/api/logout', userController.isLoggedIn, userController.getLogout);
 
 //verify if user is logged in
 app.post('/isLoggedIn', userController.isLoggedIn);

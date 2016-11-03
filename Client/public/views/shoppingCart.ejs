@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-controller="MainController">
+<div class="container-fluid" ng-controller="MainController" ng-if= currentUser>
   <div class="jumbotron">
     <h2>Your Shopping Cart</h2>
   </div>
@@ -24,4 +24,7 @@
       </table>
       <button class="btn btn-primary" ui-sref="checkout">Checkout</button>
   </div>
+</div>
+<div class="row fullPage" ng-controller="UserController" ng-if= !currentUser style="margin: 100px">
+  <h1> Please <a href="/login">login</a> to access this page </h1>
 </div>
