@@ -2,6 +2,7 @@ var passport = require('passport'),
     User = require('../models/User'),
     UserLogs = require('../models/UserLogs'),
     Advertisement = require('../models/Advertisement'),
+    jsonfile = require('jsonfile'),
     lastLoginTime;
 
 /*
@@ -440,6 +441,8 @@ function biddingTimeExpired() {
  |-----------------------------------------------------------
 */
 exports.userLogs = function(msg, callback){
+
+  //write it to the database
   var userLogs = new UserLogs({
     user: msg.user,
     click : msg.click,
@@ -449,5 +452,6 @@ exports.userLogs = function(msg, callback){
     if(err)
       console.log(err);
   });
-  res.send(userLogs);
+  
+  callback(null, userLogs);
 };

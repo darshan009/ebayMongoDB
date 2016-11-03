@@ -333,7 +333,7 @@ exports.userLogs = function(req, res){
     console.log("in userLogs_queue "+results);
     if(err)
       throw err;
-      res.send(results.userLogs);
+    res.send(results);
   });
 
 };
