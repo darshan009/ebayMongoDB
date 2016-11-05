@@ -14,7 +14,7 @@
               <p class="card-text">Quantity - {{allSellingAdvertisement.quantity}}</p>
               <p class="card-text">Details - {{allSellingAdvertisement.specification}}</p>
               <p class="card-text">Shipping from - {{allSellingAdvertisement.shipping}}</p>
-              <p class="card-text">Price - {{allSellingAdvertisement.price}}</p>
+              <p class="card-text">Price - ${{allSellingAdvertisement.price}}</p>
               Enter your quantity: <input type="number" class="form-control"  ng-model="quantityEntered" ng-init="quantityEntered = 1" value="1" ng-click="userLogs('Enter product quantity')">
               <span ng-if="quantityEntered > allSellingAdvertisement.quantity"> <b>Error: Your quantity cannot be greater than the original quantity </b></span>
             </br>

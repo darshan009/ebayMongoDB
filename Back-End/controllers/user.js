@@ -147,6 +147,7 @@ exports.getAdvertisementDetail = function(msg, callback){
 */
 
 exports.addToCart = function(msg, callback) {
+  console.log("-----------addToCart-------------------");
   Advertisement.findById(msg.adId).exec(function(err, advertisement){
     if(err)
       return done(err);
@@ -157,7 +158,8 @@ exports.addToCart = function(msg, callback) {
       quantity : advertisement.quantity,
       shipping : advertisement.shipping,
       price : advertisement.price,
-      quantityEntered : msg.quantityEntered
+      quantityEntered : msg.quantityEntered,
+      totalPrice : parseInt(msg.quantityEntered * advertisement.price)
     }
     console.log(fullCart);
     callback(null, fullCart);
@@ -173,12 +175,13 @@ exports.shoppingCart = function(msg, callback) {
 
 exports.checkout = function(msg, callback) {
   console.log("-----------checkout-------");
-  var shoppingCartId = 0, quantityEntered = 0, purchasedItems = [], soldItems = [];
+  var shoppingCartId = 0, quantityEntered = 0, totalPrice = 0, purchasedItems = [], soldItems = [];
 
   //loop through all the items in the cart
   for(var i=0; i<msg.shoppingCart.length; i++) {
     shoppingCartId = msg.shoppingCart[i].id;
     quantityEntered = parseInt(msg.shoppingCart[i].quantityEntered);
+    totalPrice = parseInt(msg.shoppingCart[i].totalPrice);
     User.findById(msg.userId).exec()
       .then(function(user){
         //push advertisement into purchased list of user
@@ -186,7 +189,8 @@ exports.checkout = function(msg, callback) {
           purchasedItems = user.purchasedItems;
         purchasedItems.push({
           adId: shoppingCartId,
-          quantityEntered: parseInt(quantityEntered)
+          quantityEntered: parseInt(quantityEntered),
+          totalPrice: totalPrice
         });
         user.purchasedItems = [];
         user.purchasedItems = purchasedItems;
@@ -229,7 +233,8 @@ exports.checkout = function(msg, callback) {
               soldItems = seller.soldItems;
             soldItems.push({
               adId: shoppingCartId,
-              quantityEntered: parseInt(quantityEntered)
+              quantityEntered: parseInt(quantityEntered),
+              totalPrice: totalPrice
             });
             seller.soldItems = [];
             seller.soldItems = soldItems;
@@ -278,7 +283,6 @@ exports.purchasedItems = function(msg, callback) {
 };
 
 exports.soldItems = function(msg, callback) {
-
   User.findById(msg.userId)
     .populate('soldItems.adId')
     .exec()

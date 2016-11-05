@@ -15,11 +15,13 @@ var userSchema = new mongoose.Schema({
   lastLoginTime: Date,
   purchasedItems: [{
     adId: { type: mongoose.Schema.Types.ObjectId, ref: 'Advertisement' },
-    quantityEntered: Number
+    quantityEntered: Number,
+    totalPrice: Number
   }],
   soldItems: [{
     adId: { type: mongoose.Schema.Types.ObjectId, ref: 'Advertisement' },
-    quantityEntered: Number
+    quantityEntered: Number,
+    totalPrice: Number
   }]
 });
 
