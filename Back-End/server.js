@@ -218,7 +218,6 @@ cnn.on('ready', function(){
         if(err)
           console.log(err);
         console.log("------in getAdvertisementDetail_queue backend queue calling-----");
-        console.log(res);
         //return index sent
         cnn.publish(m.replyTo, res, {
           contentType:'application/json',
@@ -278,7 +277,6 @@ cnn.on('ready', function(){
         if(err)
           console.log(err);
         console.log("------in soldItems_queue backend queue calling-----");
-        console.log(res);
         //return index sent
         cnn.publish(m.replyTo, res, {
           contentType:'application/json',
@@ -298,7 +296,6 @@ cnn.on('ready', function(){
         if(err)
           console.log(err);
         console.log("------in purchasedItems_queue backend queue calling-----");
-        console.log(res);
         //return index sent
         cnn.publish(m.replyTo, res, {
           contentType:'application/json',

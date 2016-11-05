@@ -1,6 +1,7 @@
 var passport = require('passport'),
     User = require('../models/User'),
     UserLogs = require('../models/UserLogs'),
+    BiddingLogs = require('../models/BiddingLogs'),
     Advertisement = require('../models/Advertisement'),
     jsonfile = require('jsonfile'),
     lastLoginTime;
@@ -131,7 +132,6 @@ exports.allSellingAdvertisement = function(msg, callback){
 };
 
 exports.getAdvertisementDetail = function(msg, callback){
-  console.log("------in getAdvertisementDetail-------------------");
   Advertisement.findById(msg.adId, function(err, advertisement){
     if(err)
       return done(err);
@@ -298,11 +298,6 @@ exports.soldItems = function(msg, callback) {
     });
 };
 
-exports.placeBid = function(msg, callback) {
-
-};
-
-
 
 /*
  |-----------------------------------------------------------
@@ -315,7 +310,7 @@ exports.placeBid = function(msg, callback){
   console.log(msg);
   Advertisement.findById(msg.adId).exec()
     .then(function(advertisement) {
-      console.log("inside advertisement");
+      console.log("-------------inside advertisement------------");
       console.log(advertisement);
       var biddingLogs = [];
       advertisement.lastBid = {
@@ -328,6 +323,7 @@ exports.placeBid = function(msg, callback){
       //biddingLogs
       if(advertisement.biddingLogs.length > 0)
         biddingLogs = advertisement.biddingLogs;
+        console.log("-------------inside advertisement after bidding------------");
       console.log(advertisement);
       biddingLogs.push({
         bidder: msg.userId,
@@ -342,6 +338,20 @@ exports.placeBid = function(msg, callback){
         if(err)
           return done(err);
         console.log(advertisement);
+      });
+      return [advertisement]
+    })
+    .then(function(result){
+      var biddingLogs = new BiddingLogs({
+        adId: msg.adId,
+        bidder: msg.userId,
+        date: Date.now(),
+        quantityEntered: msg.quantityEntered,
+        biddingValue: msg.biddingValue
+      });
+      biddingLogs.save(function(err, biddingLogs){
+        if(err)
+          return done(err);
       });
       callback(null, true);
     })

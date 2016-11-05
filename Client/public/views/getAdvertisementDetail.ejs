@@ -18,8 +18,8 @@
               Enter your quantity: <input type="number" class="form-control"  ng-model="quantityEntered" ng-init="quantityEntered = 1" value="1" ng-click="userLogs('Enter product quantity')">
               <span ng-if="quantityEntered > allSellingAdvertisement.quantity"> <b>Error: Your quantity cannot be greater than the original quantity </b></span>
             </br>
-              <p class="card-text" ng-if="lastEnteredBid">
-                Last Entered Bid: {{lastEnteredBid.biddingValue}}
+              <p class="card-text" ng-if= lastEnteredBid>
+                Last Entered Bid: {{lastEnteredBid}}
               </p>
               <p class="card-text" ng-if="!lastEnteredBid && bidding">
                 Last Entered Bid: No bids entered
@@ -29,7 +29,7 @@
                 </br>
                 Bid: <input type="number" class="form-control"  ng-model="biddingValueEntered" ng-click="userLogs('Enter bid value')" ng-init="biddingValueEntered = 0" value="1">
               </br>
-                <a href="#" class="btn btn-primary" ng-disabled="biddingValueEntered < allSellingAdvertisement.price" ng-click="placeBid(quantityEntered, biddingValueEntered); userLogs('Place bids')">Place your Bid</a>
+                <a href="#" class="btn btn-primary" ng-disabled="biddingValueEntered <= lastEnteredBid || biddingValueEntered < 1" ng-click="placeBid(quantityEntered, biddingValueEntered); userLogs('Place bids')">Place your Bid</a>
               </p>
               <a href="#" class="btn btn-primary" ng-if="!bidding" ng-disabled="quantityEntered > allSellingAdvertisement.quantity || quantityEntered == 0 || quantityEntered == null" ng-click="addToCart(quantityEntered); userLogs('Add to cart')">Add to Cart</a>
             </div>

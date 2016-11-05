@@ -31,8 +31,10 @@ angular.module('AdvertisementCtrl', [])
       }).success(function(data) {
         console.log("success get selling advertisement");
         console.log(data);
+        console.log(data.lastBid.biddingValue);
         if(data){
           $scope.allSellingAdvertisement = data;
+          $scope.lastEnteredBid = data.lastBid.biddingValue;
         }
         if(data.biddingStatus == true) {
           $scope.bidding = true;
@@ -57,11 +59,11 @@ angular.module('AdvertisementCtrl', [])
           console.log("success placing bid");
           console.log(data);
           if(data.bids) {
-            $scope.lastEnteredBid = data.lastBid.biddingValue;
+            //$scope.lastEnteredBid = data.lastBid.biddingValue;
           }
           window.location.reload();
         }).error(function(error) {
-          console.log("Error posting data in currentUser");
+          console.log("Error posting data in placeBid");
         });
       };
 
