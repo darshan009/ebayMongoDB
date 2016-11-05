@@ -31,7 +31,6 @@ angular.module('AdvertisementCtrl', [])
       }).success(function(data) {
         console.log("success get selling advertisement");
         console.log(data);
-        console.log(data.lastBid.biddingValue);
         if(data){
           $scope.allSellingAdvertisement = data;
           $scope.lastEnteredBid = data.lastBid.biddingValue;
