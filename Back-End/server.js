@@ -11,16 +11,16 @@ var express      = require('express'),
 
 var app = express();
 
-//require controllers
-var userController = require('./controllers/user'),
-    passportController = require('./controllers/passport');
 
-//mongoose connection
 mongoose.connect(secrets.mongodburl);
 mongoose.connection.on('error', console.error.bind(console, 'connection error'));
 mongoose.connection.once('open', function callback(){
   console.log("Mongoose connected to mongolab");
 });
+
+//require controllers
+var userController = require('./controllers/user'),
+    passportController = require('./controllers/passport');
 
 //cookieParser
 app.use(cookieParser());

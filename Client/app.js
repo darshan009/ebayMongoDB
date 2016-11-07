@@ -5,8 +5,7 @@ var express      = require('express'),
     MongoStore   = require('connect-mongo')(session),
     passport     = require('passport'),
     passportConf = require('./config/passport'),
-    secrets      = require('./config/secrets'),
-    amqp         = require('amqplib');
+    secrets      = require('./config/secrets');
 
 var app = express();
 

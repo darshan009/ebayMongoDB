@@ -19,11 +19,12 @@
   "dependencies": {
     "amqp": "^0.2.6",
     "body-parser": "^1.14.1",
+    "connect-mongo": "^0.8.2",
     "cookie-parser": "^1.4.0",
     "ejs": "*",
     "express": "^4.13.3",
-    "connect-mongo": "^0.8.2",
     "express-session": "^1.12.1",
+    "kerberos": "0.0.21",
     "mongoose": "^4.6.5",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",

@@ -1,7 +1,7 @@
 var passport = require('passport'),
     localStrategies = require('passport-local'),
     User = require('../models/User');
-
+    mongoose     = require('mongoose');
 
 exports.deserializeUser = function(msg, callback) {
   User.findById(msg.id, function(err, user) {

@@ -137,8 +137,6 @@ exports.isLoggedInAngular = function(req, res, next) {
 };
 
 exports.isLoggedIn = function(req, res, next) {
-  console.log("--------------------in isLoggedIn-------------");
-  console.log(req.user);
   if(req.user)
     return next();
   else

@@ -475,7 +475,7 @@ exports.getUser = function(msg, callback){
 
   User.findOne({email: msg.email}, function(err, user){
     if(err)
-      return done(err);
+      return console.log(err);
     console.log("-----------------getUser------------------------------------------");
     console.log(user);
     if(user)
